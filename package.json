@@ -1,18 +1,19 @@
 {
-  "name": "02-HTML-CSS",
+  "name": "CAS-FEE-Projekt-1",
   "version": "1.0.0",
   "description": "Static webserver",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/cas-fe/02-HTML-CSS.git"
+    "url": "https://github.com/stephenatchison/CAS-FEE-Projekt-1.git"
   },
   "author": "Thomas Jaggi",
   "license": "MIT",
-  "homepage": "https://github.com/cas-fe/02-HTML-CSS",
+  "homepage": "https://github.com/stephenatchison/CAS-FEE-Projekt-1",
   "dependencies": {
     "finalhandler": "^0.3.6",
     "serve-static": "^1.9.2",
+    "core-js": "2.4.1",
     "handlebars": "4.0.8",
     "jquery": "3.2.1",
     "font-awesome": "4.7.0"
