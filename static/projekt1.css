@@ -1,4 +1,59 @@
 body {
   padding: 0;
   margin: 0;
+  font-size: 1rem;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 2rem;
+  padding: 0.5rem 2rem 0.5rem 0.5rem;
+  margin: 0;
+  background-color: aliceblue;
+  box-sizing: border-box;
+}
+
+header > div:first-child {
+
+}
+
+header > div:last-child {
+  width: 10rem;
+}
+
+header > div:last-child > select {
+  width: 100%;
+}
+
+main {
+  display: block;
+  padding: 0.5rem;
+  margin: 3rem auto 0 auto;
+  background-color: snow;
+  max-width: 1200px;
+}
+
+section.list > article {
+  display: flex;
+  justify-content: space-between;
+  background-color: lightgoldenrodyellow;
+  height: 3rem;
+}
+
+section.list > article > div {
+  flex-basis: 100%;
+  padding: 0.5rem;
+}
+
+section.list > article > div:first-child,
+section.list > article > div:last-child {
+  flex-basis: content;
+}
+
+section.list > article + article {
+  margin-top: 2rem;
 }
