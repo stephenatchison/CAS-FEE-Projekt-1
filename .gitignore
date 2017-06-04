@@ -1,3 +1,4 @@
 node_modules
-static/lib
+static/scripts
+static/styles
 static/fonts

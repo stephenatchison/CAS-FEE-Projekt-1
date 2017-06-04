@@ -1,65 +1,49 @@
 window.noteApp.Note = function() {
-    var _title = '';
-    var _description = '';
-    var _importance = 0;
-    var _dueDate = null;
-    var _completionDate = null;
+    this.id = 0;
+    this.title = '';
+    this.description = '';
+    this.importance = 0;
+    this.creationDate = new Date();
+    this.dueDate = null;
+    this.completionDate = null;
 
-    this.getTitle = function() { return _title; };
-    this.setTitle = function(value) { _title = value; };
-
-    this.getDescription = function() { return _description; };
-    this.setDescription = function(value) { _description = value; };
-
-    this.getImportance = function() { return _importance; };
-    this.setImportance = function(value) { _importance = value; };
-
-    this.getDueDate = function() { return _dueDate; };
-    this.setDueDate = function(value) {
-        if (typeof value === 'undefined')
-            value = null;
-
-        _dueDate = value;
-    };
-
-    this.getCompletionDate = function() { return _completionDate; };
-    this.setCompletionDate = function(value) {
-        if (typeof value === 'undefined')
-            value = null;
-
-        _completionDate = value;
-    };
-
-    this.getCompleted = function() { return _completionDate !== null; };
-    this.setCompleted = function(value) {
-        if (value) {
-            if (_completionDate === null) {
-                _completionDate = new Date();
-            }
-        } else {
-            _completionDate = null;
+    if (arguments.length >= 1) {
+        if (typeof arguments[0] === 'object') {
+            this.init(arguments[0]);
+        } else if (typeof arguments[0] === 'string') {
+            this.initFromJSON(arguments[0]);
         }
-    };
-
-    this.toJSON = function() {
-        return JSON.stringify({
-            _title: _title,
-            _description: _description,
-            _importance: _importance,
-            _dueDate: _dueDate,
-            _completionDate: _completionDate
-        });
-    }
-
-    this.initFromJSON = function(json) {
-        obj = JSON.parse(json);
-
-        _title = obj._title;
-        _description = obj._description;
-        _importance = obj._importance;
-        _dueDate = obj._dueDate;
-        _completionDate = obj._completionDate;
-
-        return this;
     }
 }
+
+window.noteApp.Note.prototype.toJSON = function() {
+    return JSON.stringify(this);
+};
+
+window.noteApp.Note.prototype.initFromJSON = function(json) {
+    return this.init(JSON.parse(json));
+};
+
+window.noteApp.Note.prototype.init = function(obj) {
+    this.id = obj.id;
+    this.title = obj.title;
+    this.description = obj.description;
+    this.importance = obj.importance;
+    this.creationDate = obj.creationDate;
+    this.dueDate = obj.dueDate;
+    this.completionDate = obj.completionDate;
+
+    return this;
+};
+
+window.noteApp.Note.prototype.update = function(note) {
+    if (this.id === note.id) {
+        this.title = note.title;
+        this.description = note.description;
+        this.importance = note.importance;
+        this.dueDate = note.dueDate;
+        this.completionDate = note.getCompletionDate;
+    }
+};
+
+window.noteApp.Note.prototype.constructor = window.noteApp.Note;

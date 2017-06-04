@@ -1,0 +1,302 @@
+window.noteApp = (function App(w) {
+    var _that = this;
+    var _window = w;
+    var $ = w.$;
+    var _appController;
+
+    this.window = function(){
+        return _window;
+    };
+
+    this.run = function() {
+        _appController = this.getController('app');
+        _appController.activate();
+    };
+
+    // Routing
+    $('a').on('click', e => {
+
+    });
+
+    // Controllers, Views, HtmlGenerators
+    _baseObject = {};
+    _baseObject.app = this;
+    _baseObject.$ = _window.$;
+
+    _baseController = Object.create(_baseObject);
+    _baseController.activate = function() {
+        if (typeof(this.afterActivating) === 'function') {
+            this.afterActivating();
+        }
+    };
+    _baseController.deactivate = function() {
+        if (typeof(this.beforeDeactivating) === 'function') {
+            this.beforeDeactivating();
+        }
+    };
+
+    var _controllers = {};
+    this.addController = function (name, ctrlConstructor) {
+        if (!_controllers.hasOwnProperty(name)) {
+            ctrlConstructor.prototype = _baseController;
+            ctrlConstructor.prototype.constructor = ctrlConstructor;
+            var entry = { factory: ctrlConstructor, controller: null };
+
+            _controllers[name] = entry;
+        } else {
+            throw 'A controller with the name ' + name + ' has already been registerd!';
+        }
+    };
+    this.getController = function (name) {
+        if (_controllers.hasOwnProperty(name)) {
+            var entry = _controllers[name];
+            if (entry.controller === null) {
+                entry.controller = new entry.factory();
+            }
+            return entry.controller;
+        } else {
+            throw 'A controller with the name "' + name + '" has not been registerd!';
+        }
+    };
+
+
+    _baseView = Object.create(_baseObject);
+    _baseView.targetElement = (function(document) {
+        let elems = _window.document.getElementsByTagName('main');
+        if (elems.length === 0) {
+            throw 'No MAIN tag found!';
+        }
+        return elems[0];
+    })(_window.document);
+    _baseView.render = function(data) {
+        if (typeof(this.beforeRendering) === 'function') {
+            this.beforeRendering(this.targetElement);
+        }
+        this.targetElement.innerHTML = (this.app.getHtmlGenerator(this.viewName))(data);
+        if (typeof(this.afterRendering) === 'function') {
+            this.afterRendering(this.targetElement);
+        }
+    };
+
+    var _views = {};
+    this.addView = function(name, viewConstructor) {
+        if (!_views.hasOwnProperty(name)) {
+            viewConstructor.prototype = _baseView;
+            viewConstructor.prototype.constructor = viewConstructor;
+            var entry = { factory: viewConstructor };
+            _views[name] = entry;
+        } else {
+            throw 'A view with the name ' + name + ' has already been registered!';
+        }
+    };
+    this.getView = function(name) {
+        if (_views.hasOwnProperty(name)) {
+            var entry = _views[name];
+            return new entry.factory();
+        } else {
+            throw 'A view the name ' + name + ' has not been registered!';
+        }
+    }
+
+    var _htmlGenerators = {};
+    this.getHtmlGenerator = function(name) {
+        if (!_htmlGenerators.hasOwnProperty(name)) {
+            let templateElem = _window.document.getElementById(name);
+            if (templateElem) {
+                _htmlGenerators[name] = _window.Handlebars.compileTemplate(templateElem.textContent);
+            } else {
+                throw 'A template the name ' + name + ' could not be found in the document!';
+            }
+        }
+        return _htmlGenerators[name];
+    };
+})(window);
+
+//start the application
+$(function() {
+    window.noteApp.run();
+});
+
+window.noteApp.addController('app', function(){
+    _view = this.app.getView('app');
+});
+
+window.noteApp.addView('app', function(){
+    
+});
+
+noteApp.addController('editNote', function (document) {
+    var _view = this.app.getView('editNote');
+    var _note = null;
+
+    this.afterActivating = function(){
+    };
+});
+window.noteApp.AddView('editNote', function() {
+    this.viewName = 'editNoteView';
+
+    this.afterActivating = function() {
+    };
+
+    this.beforeDeactivating = function() {
+    };
+
+    this.afterRendering = function(elem) {
+    };
+});
+noteApp.addController('main', function () {
+    var _view = this.app.getView('main');
+    var _notes = [];
+
+    this.afterActivating = function(){
+    };
+});
+window.noteApp.AddView('main', function() {
+    this.viewName = 'mainView';
+
+    this.onEditNote = null;
+    this.onDeleteNote = null;
+    this.onNoteCompleted = null;
+
+    this.afterActivating = function() {
+    };
+
+    this.beforeDeactivating = function() {
+    };
+
+    this.beforeRendering = function(elem) {
+        $('#notes', elem).off('click');
+    }
+
+    this.afterRendering = function(elem) {
+        $('#notes', elem).on('click', ':button', e => {
+            let id = e.target.dataset.id;
+            let action = e.target.dataset.action;
+
+            if (action === 'edit') {
+                if (this.onEditNote !== null) {
+                    this.onEditNote(id);
+                }
+            } else if (action === 'delete') {
+                if (this.onDeleteNote !== null) {
+                    this.onDeleteNote(id);
+                }
+            } else {
+                console.log('Unknown action: ' + action);
+            }
+        });
+    };
+});
+window.noteApp.dataService = (function(app) {
+    var _app = app;
+    var _notes = null;
+    var _nextId = 1;
+
+    function loadAllNotes() {
+        if (_notes === null) {
+            // load all notes from localStorage
+            let notes = [];
+            let key, strJson;
+            for(let i = 0, ii = localStorage.length; i < ii; i++) {
+                key = localStorage.key(i);
+                if (key.startsWith('note_')) {
+                    strJson = localStorage.getItem(key);
+                    notes.push(new _app.Note(strJson));
+                }
+            }
+            // store notes in object
+            _notes = notes;
+
+            // determine nextId
+            _nextId = (_notes.length === 0) ? 1 : (_notes.map(e => e.getId()).sort((a, b) => b - a))[0] + 1;
+        }
+        return notes;
+    }
+
+    function getNextId() {
+        loadAllNotes();
+        return _nextId++;
+    }
+
+    function saveNoteToLocalStorage(note) {
+        localStorage.setItem('note_' + note.getId(), JSON.stringify(note));
+    }
+
+    this.loadAll = function(){
+        return loadAllNotes();
+    };
+
+    this.save = function(note) {
+        if (note != null) {
+            if (note.getId() === 0) {
+                note.setId(getNextId());
+                _notes.push(note);
+            } else {
+                let n = _notes.find(e => e.getId() === note.getId());
+                n.update(note);
+            }
+            saveNoteToLocalStorage(note);
+        }
+    };
+})(window.noteApp);
+window.noteApp.Note = function() {
+    this.id = 0;
+    this.title = '';
+    this.description = '';
+    this.importance = 0;
+    this.creationDate = new Date();
+    this.dueDate = null;
+    this.completionDate = null;
+
+    if (arguments.length >= 1) {
+        if (typeof arguments[0] === 'object') {
+            this.init(arguments[0]);
+        } else if (typeof arguments[0] === 'string') {
+            this.initFromJSON(arguments[0]);
+        }
+    }
+
+    this.toJSON = function() {
+        return JSON.stringify({
+            _id: _id,
+            _title: _title,
+            _description: _description,
+            _importance: _importance,
+            _creationDate: _creationDate,
+            _dueDate: _dueDate,
+            _completionDate: _completionDate
+        });
+    }
+
+    this.initFromJSON = function(json) {
+        return this.init(JSON.parse(json));
+    }
+
+    this.init = function(obj) {
+        this.id = obj._id;
+        this.title = obj._title;
+        this.description = obj._description;
+        this.importance = obj._importance;
+        this.creationDate = obj._creationDate;
+        this.dueDate = obj._dueDate;
+        this.completionDate = obj._completionDate;
+
+        return this;
+    }
+    this.update = function(note) {
+        if (this.id === note.id) {
+            this.title = note.title;
+            this.description = note.description;
+            this.importance = note.importance;
+            this.dueDate = note.dueDate;
+            this.completionDate = note.getCompletionDate;
+        }
+    }
+}
+window.noteApp.router = (function(app){
+    var _app = app;
+
+    app.window.$(window).on('popstate', function(){
+        
+    });
+})(window.noteApp);

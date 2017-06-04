@@ -1,6 +1,9 @@
-noteApp.addController('main', function (document) {
-    var view = (function() {
-        var template = this.compileTemplate('main');
-        var noteTemplate = this.compileTemplate('noteListEntry');
-    })();
+noteApp.addController('main', function () {
+    var _view = this.app.getView('main');
+    var _notes = [];
+
+    this.afterActivating = function(){
+        _notes = this.app.dataService.loadAll();
+        _view.render({notes: _notes});
+    };
 });

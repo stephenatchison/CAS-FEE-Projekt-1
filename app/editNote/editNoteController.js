@@ -1,5 +1,7 @@
 noteApp.addController('editNote', function (document) {
-    var view = (function() {
-        var template = this.compileTemplate('editNote');
-    })();
+    var _view = this.app.getView('editNote');
+    var _note = null;
+
+    this.afterActivating = function(){
+    };
 });
