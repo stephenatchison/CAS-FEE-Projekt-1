@@ -1,0 +1,12 @@
+dunkel header {
+  background-color: aliceblue;
+}
+
+dunkel footer {
+    border-top-color: #ccc;
+    color: #ccc;
+}
+
+dunkel main {
+  background-color: snow;
+}

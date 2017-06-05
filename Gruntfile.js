@@ -33,6 +33,10 @@ module.exports = function(grunt){
       dist: {
         src: [ './app/**/*.js' ],
         dest: './static/scripts/noteApp.js'
+      },
+      styles: {
+        src: ['./styles/layout.css', './styles/hell.css', './styles/dunkel.css'],
+        dest: './static/styles/noteApp.css'
       }
     },
     uglify: {
@@ -49,12 +53,16 @@ module.exports = function(grunt){
       },
       src: {
         files: './app/**/*.js',
-        tasks: ['concat']
+        tasks: ['concat:dist']
       },
-      dist: {
-        files: './static/scripts/noteApp.js',
-        tasks: ['uglify']
-      },
+      styles: {
+        files: './styles/*.css',
+        tasks: ['concat:styles']
+      }
+      //dist: {
+      //  files: './static/scripts/noteApp.js',
+      //  tasks: ['uglify']
+      //},
     }
   });
 
@@ -63,6 +71,6 @@ module.exports = function(grunt){
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
-  grunt.registerTask('default', ['watch:src']);
+  grunt.registerTask('default', ['watch']);
   grunt.registerTask('build', ['concat']);
 }
