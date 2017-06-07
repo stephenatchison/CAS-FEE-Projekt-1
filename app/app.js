@@ -1,5 +1,8 @@
 window.noteApp = new (function App(w) {
 
+    // active controller
+    var _activeController = null;
+
     function activateController(controller) {
         if (_activeController != null) {
             _activeController.deactivate();
@@ -14,6 +17,7 @@ window.noteApp = new (function App(w) {
 
     var _that = this;
     var _window = w;
+    var _document = w.document;
     var $ = w.$;
     var _appController;
 
@@ -21,35 +25,20 @@ window.noteApp = new (function App(w) {
         return _window;
     };
 
+    this.document = function(){
+        return _document;
+    };
+
     this.run = function() {
         _appController = this.getController('app');
         _appController.activate();
 
-        activateController(this.getController('main'));
+        this.setActiveController('main');
     };
 
-    // Routing
-    var _activeController = null;
-
-    // capture clicks in links
-    $('a').on('click', e => {
-        let href = $(e.target).attr('href');
-        if (!(href.startsWith('http://') || href.startsWith('https://')) && (!href.startsWith(_window.document.baseUri))) {
-            e.preventDefault();
-            let path;
-            if (href.startsWith(_window.document.baseUri)) {
-                path = href.substr(_windows.document.baseUri);
-            } else {
-                path = href;
-            }
-            this.navigateTo(path);
-        }
-    });
-
-    // capture "history navigation"
-    $(_window).on('popstate', e => {
-
-    });
+    this.setActiveController = function(name) {
+        activateController(this.getController(name));
+    }
 
     // Controllers, Views, HtmlGenerators
     _baseObject = {};
@@ -110,6 +99,11 @@ window.noteApp = new (function App(w) {
             this.afterRendering(this.targetElement);
         }
     };
+    _baseView.destroy = function() {
+        if (typeof(this.onDestroy) === 'function') {
+            this.onDestroy();
+        }
+    }
 
     var _views = {};
     this.addView = function(name, viewConstructor) {
@@ -146,6 +140,4 @@ window.noteApp = new (function App(w) {
 })(window);
 
 //start the application
-$(function() {
-    window.noteApp.run();
-});
+$().ready(e => window.noteApp.run());

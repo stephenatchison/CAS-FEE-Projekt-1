@@ -1,6 +1,8 @@
 window.noteApp.addView('app', function(){
     var that = this;
     var $ = this.$;
+    var body = this.app.document().body;
+    var themeSelect = this.app.document().getElementById('theme');
 
     var themes = [
         { displayName: 'Hell', className: 'hell' },
@@ -15,11 +17,13 @@ window.noteApp.addView('app', function(){
 
     this.setTheme = function(name) {
         for(let theme of themes) {
-            $('body').removeClass(theme.className);
+            body.classList.remove(theme.className);
         }
-        $('body').addClass(name);
+        body.classList.add(name);
 
-        $('#theme').val(name);
+        if (themeSelect != null) {
+            themeSelect.value = name;
+        }
     };
 
     this.themeChanged = null;
@@ -29,10 +33,10 @@ window.noteApp.addView('app', function(){
     for(let theme of themes) {
         html += '<option value="'+ theme.className +'">' + theme.displayName + '</option>';
     }
-    $('#theme').html(html);
+    themeSelect.innerHTML = html;
 
     // hook theme change event
-    $('#theme').on('change', e => {
+    themeSelect.addEventListener('change', e => {
         notifyThemeChanged(e.target.value);
     });
 });
