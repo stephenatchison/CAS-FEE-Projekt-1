@@ -30,6 +30,14 @@ window.noteApp = new (function App(w) {
     };
 
     this.run = function() {
+        // build routing table
+        for(let name in _controllers) {
+            let controller = _controllers[name];
+            if (controller.path != null) {
+                this.routerService.addRoute(controller.path, name);
+            }
+        }
+
         _appController = this.getController('app');
         _appController.activate();
 
@@ -58,11 +66,11 @@ window.noteApp = new (function App(w) {
     };
 
     var _controllers = {};
-    this.addController = function (name, ctrlConstructor) {
+    this.addController = function (name, path, ctrlConstructor) {
         if (!_controllers.hasOwnProperty(name)) {
             ctrlConstructor.prototype = _baseController;
             ctrlConstructor.prototype.constructor = ctrlConstructor;
-            var entry = { factory: ctrlConstructor, controller: null };
+            var entry = { factory: ctrlConstructor, controller: null, path: path };
 
             _controllers[name] = entry;
         } else {

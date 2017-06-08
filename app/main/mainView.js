@@ -4,24 +4,47 @@ window.noteApp.addView('main', function() {
     var that = this;
     var $notesElem = null;
 
-    function handleNoteEvent(e) {
+    function findArticle(elem) {
+        if (elem === null) {
+            return null;
+        } else if (elem.tagName === 'ARTICLE') {
+            return elem;
+        } else {
+            return findArticle(elem.parentElement);
+        }
+    }
 
+    function handleCompletionEvent(e) {
+        let article = findArticle(e.currentTarget);
+        if (article != null) {
+            let id = Number(article.dataset.id);
+            if (that.onNoteCompletedChange !== null) {
+                that.onNoteCompletedChange(id, e.currentTarget.value);
+            }
+        } else {
+            console.log('No article found!');
+        }
     }
 
     function handleButtonEvent(e) {
-        let id = e.target.dataset.id;
-        let action = e.target.dataset.action;
+        let article = findArticle(e.currentTarget);
+        if (article != null) {
+            let id = Number(article.dataset.id);
+            let action = e.currentTarget.dataset.action;
 
-        if (action === 'edit') {
-            if (this.onEditNote !== null) {
-                this.onEditNote(id);
-            }
-        } else if (action === 'delete') {
-            if (this.onDeleteNote !== null) {
-                this.onDeleteNote(id);
+            if (action === 'edit') {
+                if (that.onEditNote !== null) {
+                    that.onEditNote(id);
+                }
+            } else if (action === 'delete') {
+                if (that.onDeleteNote !== null) {
+                    that.onDeleteNote(id);
+                }
+            } else {
+                console.log('Unknown action: ' + action);
             }
         } else {
-            console.log('Unknown action: ' + action);
+            console.log('No article found!');
         }
     }
 
@@ -29,6 +52,7 @@ window.noteApp.addView('main', function() {
         $notesElem = $('#notes', elem);
         if ($notesElem != null) {
             $notesElem.on('click', 'button', handleButtonEvent);
+            $notesElem.on('change', 'input:checkbox', handleCompletionEvent);
         }
     }
 

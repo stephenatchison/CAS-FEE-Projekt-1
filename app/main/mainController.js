@@ -1,17 +1,17 @@
-noteApp.addController('main', function () {
+noteApp.addController('main', '/', function () {
     var _notes = [];
 
     var _view = this.app.getView('main');
-    _view.onEditNote = id => {
+    _view.onEditNote = function(id) {
         let note = _notes.find(n => n.id === id);
         if (note != null) {
-            this.app.setActiveController('editNote');
+            this.app.routerService.navigateTo('/editNote/' + id);
         }
     };
-    _view.onDeleteNote = id => {
+    _view.onDeleteNote = function(id) {
 
     };
-    _view.onNoteCompletedChange = (id, completed) => {
+    _view.onNoteCompletedChange = function(id, completed) {
 
     };
 

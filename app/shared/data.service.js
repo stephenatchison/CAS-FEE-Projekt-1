@@ -46,6 +46,13 @@ window.noteApp.dataService = new (function(app) {
         return loadAllNotes();
     };
 
+    this.getNote = function(id) {
+        loadAllNotes();
+        return _notes.find(function(n){
+            return (n.id === id);
+        });
+    };
+
     this.save = function(note) {
         if (note != null) {
             if (note.id === 0) {
