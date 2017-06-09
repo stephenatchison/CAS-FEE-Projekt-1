@@ -4,14 +4,18 @@ body {
   font-size: 1rem;
 }
 
+ul {
+  padding: 0;
+  margin: 0;
+}
+
 header {
   display: flex;
   justify-content: space-between;
   position: fixed;
   top: 0;
   width: 100%;
-  height: 2rem;
-  padding: 0.5rem 2rem 0.5rem 0.5rem;
+  padding: 1rem 0.5rem;
   margin: 0;
   box-sizing: border-box;
 }
@@ -39,8 +43,36 @@ footer {
 main {
   display: block;
   padding: 0.5rem;
-  margin: 3rem auto 0 auto;
+  margin: 4rem auto 0 auto;
   max-width: 1200px;
+}
+
+#viewOptions {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+  align-content: flex-start;
+  margin-bottom: 2rem;
+}
+
+#viewOptions ul {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+#viewOptions li {
+  list-style: none;
+  display: inline-block;
+  border-width: 1px;
+  border-style: solid;
+  padding: 0.5rem 1.5rem;
+  cursor: pointer;
+}
+
+#viewOptions li + li {
+  margin-left: 0.5rem;
 }
 
 article.note {

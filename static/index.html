@@ -19,12 +19,22 @@
         <!-- Handlebars templates for the application -->
         <script type="text/x-handlebars-template" id="mainView">
             <section>
+                <div id="viewOptions">
+                    <ul id="sortButtons">
+                        <li id="byDueDate">By Due Date</li>
+                        <li id="byCreateDate">By Creation Date</li>
+                        <li id="byImportance">By Importance</li>
+                    </ul>
+                    <ul>
+                        <li id="showCompleted">Show Completed</li>
+                    </ul>
+                </div>
             </section>
             <section class="notelist" id="notes">
                 {{#each notes}}
                 <article class="note" data-id="{{id}}">
-                    <div><label><input type="checkbox" name="completedNotes" value"{{id}}">erledigt</label></div>
-                    <div><div>{{title}}</div><div>{{description}}</div></div>
+                    <div><div>{{dueDate}}</div><div><label><input type="checkbox" name="completedNotes" value"{{id}}">erledigt</label></div><div>{{completionDate}}</div></div>
+                    <div><div><div>{{title}}</div><div>{{importance}}</div></div><div>{{description}}</div></div>
                     <div><button type="button" data-action="edit"><i class="fa fa-pencil"></i></button> <button type="button" data-action="delete"><i class="fa fa-trash"></i></button></div>
                 </article>
                 {{/each}}

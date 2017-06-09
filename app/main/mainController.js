@@ -5,7 +5,7 @@ noteApp.addController('main', '/', function () {
     _view.onEditNote = function(id) {
         let note = _notes.find(n => n.id === id);
         if (note != null) {
-            this.app.routerService.navigateTo('/editNote/' + id);
+            this.app.routerService.navigateTo('/editNote/' + id, true);
         }
     };
     _view.onDeleteNote = function(id) {

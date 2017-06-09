@@ -41,7 +41,7 @@ window.noteApp = new (function App(w) {
         _appController = this.getController('app');
         _appController.activate();
 
-        this.setActiveController('main');
+        this.routerService.setInitialController('main');
     };
 
     this.setActiveController = function(name) {

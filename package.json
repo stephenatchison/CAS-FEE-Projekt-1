@@ -11,7 +11,9 @@
   "license": "MIT",
   "homepage": "https://github.com/stephenatchison/CAS-FEE-Projekt-1",
   "scripts": {
-    "prepublish": ""
+    "prepublish": "",
+    "start": "node index.js",
+    "grunt": "grunt"
   },
   "dependencies": {
     "finalhandler": "^0.3.6",
