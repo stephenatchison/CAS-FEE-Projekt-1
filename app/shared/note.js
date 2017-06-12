@@ -29,9 +29,9 @@ window.noteApp.Note.prototype.init = function(obj) {
     this.title = obj.title;
     this.description = obj.description;
     this.importance = obj.importance;
-    this.creationDate = obj.creationDate;
-    this.dueDate = obj.dueDate;
-    this.completionDate = obj.completionDate;
+    this.creationDate = (obj.creationDate != null) ? new Date(obj.creationDate) : null;
+    this.dueDate = (obj.dueDate != null) ? new Date(obj.dueDate) : null;
+    this.completionDate = (obj.completionDate != null) ? new Date(obj.completionDate) : null;
 
     return this;
 };

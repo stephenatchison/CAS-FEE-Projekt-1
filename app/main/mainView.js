@@ -3,6 +3,28 @@ window.noteApp.addView('main', function() {
 
     var that = this;
     var $notesElem = null;
+    var $byDueDateElem = null;
+    var $byCreationDateElem = null;
+    var $byImportanceElem = null;
+    var $showCompletedElem = null;
+
+    function setActive($elem, isActive) {
+        if ($elem != null) {
+            if (isActive) {
+                $elem.addClass('active');
+            } else {
+                $elem.removeClass('active');
+            }
+        }
+    }
+
+    function findRequiredElements(elem) {
+        $notesElem = $('#notes', elem);
+        $byDueDateElem = $('#byDueDate', elem);
+        $byCreationDateElem = $('#byCreationDate', elem);
+        $byImportanceElem = $('#byImportance', elem);
+        $showCompletedElem = $('#showCompleted', elem);
+    }
 
     function findArticle(elem) {
         if (elem === null) {
@@ -11,6 +33,18 @@ window.noteApp.addView('main', function() {
             return elem;
         } else {
             return findArticle(elem.parentElement);
+        }
+    }
+
+    function handleSetSortOrder(sortOrder) {
+        if (that.onSortOrderChange != null) {
+            that.onSortOrderChange(sortOrder);
+        }
+    }
+
+    function handleShowCompletedEvent() {
+        if (that.onShowCompletedChange != null) {
+            that.onShowCompletedChange();
         }
     }
 
@@ -48,25 +82,64 @@ window.noteApp.addView('main', function() {
         }
     }
 
-    function addEventHandlers(elem) {
-        $notesElem = $('#notes', elem);
+    function addSortHandler($elem, sortOrder, rootElem) {
+        if ($elem != null) {
+            $elem.on('click', handleSetSortOrder.bind(that, sortOrder));
+        }
+    }
+
+    function removeSortHandler($elem) {
+        if ($elem != null) {
+            $elem.off('click');
+        }
+    }
+
+    function addEventHandlers() {
         if ($notesElem != null) {
             $notesElem.on('click', 'button', handleButtonEvent);
             $notesElem.on('change', 'input:checkbox', handleCompletionEvent);
+        }
+
+        addSortHandler($byDueDateElem, 1);
+        addSortHandler($byCreationDateElem, 2);
+        addSortHandler($byImportanceElem, 3);
+
+        if ($showCompletedElem != null) {
+            $showCompletedElem.on('click', handleShowCompletedEvent);
         }
     }
 
 
     function removeEventHandlers() {
         if ($notesElem != null) {
-            $notesElem.off('click', handleButtonEvent)
+            $notesElem.off('click');
             $notesElem = null;
+        }
+
+        removeSortHandler($byDueDateElem);
+        removeSortHandler($byCreationDateElem);
+        removeSortHandler($byImportanceElem);
+
+        if ($showCompletedElem != null) {
+            $showCompletedElem.off('click');
         }
     }
 
     this.onEditNote = null;
     this.onDeleteNote = null;
     this.onNoteCompletedChange = null;
+    this.onSortOrderChange = null;
+    this.onShowCompletedChange = null;
+
+    this.setSortOrder = function(sortOrder) {
+        setActive($byDueDateElem, sortOrder === 1);
+        setActive($byCreationDateElem, sortOrder === 2);
+        setActive($byImportanceElem, sortOrder === 3);
+    };
+
+    this.setShowCompleted = function(flag) {
+        setActive($showCompletedElem, flag);
+    };
 
     // this.afterActivating = function() {
     // };
@@ -83,6 +156,7 @@ window.noteApp.addView('main', function() {
     }
 
     this.afterRendering = function(elem) {
-        addEventHandlers(elem);
+        findRequiredElements(elem);
+        addEventHandlers();
     };
 });

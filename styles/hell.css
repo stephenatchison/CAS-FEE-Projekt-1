@@ -28,3 +28,14 @@
   border-color: red;
   background-color: aliceblue;
 }
+
+.hell #sortButtons li.active:hover,
+.hell #viewOptions li.active {
+  background-color: blue;
+  border-color: royalblue;
+}
+
+.hell #sortButtons li:hover {
+  background-color: #777;
+  border-color: #777;
+}

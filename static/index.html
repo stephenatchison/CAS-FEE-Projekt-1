@@ -21,12 +21,12 @@
             <section>
                 <div id="viewOptions">
                     <ul id="sortButtons">
-                        <li id="byDueDate">By Due Date</li>
-                        <li id="byCreateDate">By Creation Date</li>
-                        <li id="byImportance">By Importance</li>
+                        <li id="byDueDate" {{#if sortByDueDate}}class="active"{{/if}}>By Due Date</li>
+                        <li id="byCreationDate" {{#if sortByCreationDate}}class="active"{{/if}}>By Creation Date</li>
+                        <li id="byImportance" {{#if sortByImportance}}class="active"{{/if}}>By Importance</li>
                     </ul>
                     <ul>
-                        <li id="showCompleted">Show Completed</li>
+                        <li id="showCompleted" {{#if showCompleted}}class="active"{{/if}}>Show Completed</li>
                     </ul>
                 </div>
             </section>
@@ -34,7 +34,7 @@
                 {{#each notes}}
                 <article class="note" data-id="{{id}}">
                     <div><div>{{dueDate}}</div><div><label><input type="checkbox" name="completedNotes" value"{{id}}">erledigt</label></div><div>{{completionDate}}</div></div>
-                    <div><div><div>{{title}}</div><div>{{importance}}</div></div><div>{{description}}</div></div>
+                    <div><div><div>{{title}}</div><div class="fa">{{{importance}}}</div></div><div>{{description}}</div><div>created: {{creationDate}}</div></div>
                     <div><button type="button" data-action="edit"><i class="fa fa-pencil"></i></button> <button type="button" data-action="delete"><i class="fa fa-trash"></i></button></div>
                 </article>
                 {{/each}}
@@ -48,6 +48,7 @@
         <!-- Scripts required by the application -->
         <script type="text/javascript" src="scripts/jquery-3.2.1.min.js"></script>
         <script type="text/javascript" src="scripts/handlebars-4.0.8.min.js"></script>
+        <script type="text/javascript" src="scripts/moment-2.18.1.min.js"></script>
         <script type="text/javascript" src="scripts/noteApp.js"></script>
 	</body>
 </html>

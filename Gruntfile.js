@@ -21,6 +21,11 @@ module.exports = function(grunt){
           { src: './node_modules/handlebars/dist/handlebars.min.js', dest: './static/scripts/handlebars-4.0.8.min.js' }
         ]
       },
+      moment: {
+        files: [
+          { src: './node_modules/moment/min/moment.min.js', dest: './static/scripts/moment-2.18.1.min.js' }
+        ]
+      },
       styles: {
         files: [
           { src: './styles/projekt1.css', dest: './static/styles/noteApp.css' }

@@ -28,3 +28,14 @@
   border-color: #aaa;
   background-color: #777;
 }
+
+.dunkel #sortButtons li.active:hover,
+.dunkel #viewOptions li.active {
+  background-color: lightgoldenrodyellow;
+  border-color: yellow;
+}
+
+.dunkel #sortButtons li:hover {
+  background-color: #777;
+  border-color: #777;
+}
