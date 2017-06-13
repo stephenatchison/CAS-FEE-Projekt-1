@@ -99,3 +99,20 @@ article.note > div:nth-of-type(2) {
 article.note > div:last-child {
   flex: 0 0 auto;
 }
+
+.formControl {
+  display: block;
+}
+
+.formControl label {
+  display: block;
+}
+
+#formButtons,
+.formControl + .formControl {
+  margin-top: 1rem;
+}
+
+#importance {
+  font-family: 'FontAwesome', 'Helvetica';
+}

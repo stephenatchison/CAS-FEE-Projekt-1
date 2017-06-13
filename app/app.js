@@ -100,11 +100,13 @@ window.noteApp = new (function App(w) {
     })(_window.document);
     _baseView.render = function(data) {
         if (typeof(this.beforeRendering) === 'function') {
-            this.beforeRendering(this.targetElement);
+            this.beforeRendering(this.targetElement, data);
         }
+
         this.targetElement.innerHTML = (this.app.getHtmlGenerator(this.viewName))(data);
+        
         if (typeof(this.afterRendering) === 'function') {
-            this.afterRendering(this.targetElement);
+            this.afterRendering(this.targetElement, data);
         }
     };
     _baseView.destroy = function() {

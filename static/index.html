@@ -33,8 +33,8 @@
             <section class="notelist" id="notes">
                 {{#each notes}}
                 <article class="note" data-id="{{id}}">
-                    <div><div>{{dueDate}}</div><div><label><input type="checkbox" name="completedNotes" value"{{id}}">erledigt</label></div><div>{{completionDate}}</div></div>
-                    <div><div><div>{{title}}</div><div class="fa">{{{importance}}}</div></div><div>{{description}}</div><div>created: {{creationDate}}</div></div>
+                    <div><div>{{dueDateStr}}</div><div><label><input type="checkbox" name="completedNotes" value"{{id}}">erledigt</label></div><div>{{completionDateStr}}</div></div>
+                    <div><div><div>{{title}}</div><div class="fa">{{{importanceStr}}}</div></div><div>{{description}}</div><div>created: {{creationDateStr}}</div></div>
                     <div><button type="button" data-action="edit"><i class="fa fa-pencil"></i></button> <button type="button" data-action="delete"><i class="fa fa-trash"></i></button></div>
                 </article>
                 {{/each}}
@@ -42,7 +42,35 @@
         </script>
     
         <script type="text/x-handlebars-template" id="editNoteView">
-            <div>Edit Note</div>
+            <h1>{{#if isNew}}Add New Note{{else}}Edit Note{{/if}}</h1>
+            <form novalidate>
+                <div class="formControl">
+                    <label>Titel:</label>
+                    <input type="text" id="title" name="title" value="{{title}}" />
+                </div>
+                <div class="formControl">
+                    <label>Beschreibung:</label>
+                    <textarea id="description" name="description">{{beschreibung}}</textarea>
+                </div>
+                <div class="formControl">
+                    <label>Wichtigkeit:</label>
+                    <select id="importance" name="importance" value="{{importance}}">
+                        <option value="1">&#xf0e7;</option>
+                        <option value="2">&#xf0e7;&#xf0e7;</option>
+                        <option value="3">&#xf0e7;&#xf0e7;&#xf0e7;</option>
+                        <option value="4">&#xf0e7;&#xf0e7;&#xf0e7;&#xf0e7;</option>
+                        <option value="5">&#xf0e7;&#xf0e7;&#xf0e7;&#xf0e7;&#xf0e7;</option>
+                    </select>
+                </div>
+                <div class="formControl">
+                    <label>Fälligkeitstermin:</label>
+                    <input type="date" id="dueDate" name="dueDate" value="{{dueDate}}" />
+                </div>
+                <div id="formButtons">
+                    <button type="button" id="submit">{{#if isNew}}Hinzufügen{{else}}Speichern{{/if}}</button>
+                    <button type="button" id="cancel">Abbrechen</button>
+                </div>
+            </form>
         </script>
 
         <!-- Scripts required by the application -->
