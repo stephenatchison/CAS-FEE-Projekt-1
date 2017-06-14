@@ -25,7 +25,7 @@ noteApp.addController('editNote', '/editNote', function (document) {
         _note.importance = Number(note.importance);
         _note.dueDate = new Date(note.dueDate);
 
-        that.app.dataService.save(_note);
+        that.app.dataService.saveNote(_note);
         gotoOverview();
     };
 
@@ -41,7 +41,7 @@ noteApp.addController('editNote', '/editNote', function (document) {
         if (id === 0) {
             _note = null;
         } else {
-            _note = this.app.dataService.getNote(id);
+            _note = this.app.dataService.loadNote(id);
         }
         renderView();
     };
