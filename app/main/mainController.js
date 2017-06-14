@@ -105,7 +105,7 @@ noteApp.addController('main', '/', function () {
     };
 
     _view.onAddNewNote = function() {
-        this.app.routerService.navigateTo('/editNote/0', true);
+        this.app.routerService.navigateTo('/editNote', true);
     };
 
     _view.onEditNote = function(id) {
