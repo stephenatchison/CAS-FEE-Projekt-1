@@ -19,6 +19,9 @@
         <!-- Handlebars templates for the application -->
         <script type="text/x-handlebars-template" id="mainView">
             <section>
+                <div id="actions">
+                    <button type="button" id="addNew">Hinzufügen</button>
+                </div>
                 <div id="viewOptions">
                     <ul id="sortButtons">
                         <li id="byDueDate" {{#if sortByDueDate}}class="active"{{/if}}>By Due Date</li>
@@ -50,7 +53,7 @@
                 </div>
                 <div class="formControl">
                     <label>Beschreibung:</label>
-                    <textarea id="description" name="description">{{beschreibung}}</textarea>
+                    <textarea id="description" name="description">{{description}}</textarea>
                 </div>
                 <div class="formControl">
                     <label>Wichtigkeit:</label>
@@ -64,7 +67,7 @@
                 </div>
                 <div class="formControl">
                     <label>Fälligkeitstermin:</label>
-                    <input type="date" id="dueDate" name="dueDate" value="{{dueDate}}" />
+                    <input type="date" id="dueDate" name="dueDate" value="{{dueDateInputStr}}" />
                 </div>
                 <div id="formButtons">
                     <button type="button" id="submit">{{#if isNew}}Hinzufügen{{else}}Speichern{{/if}}</button>

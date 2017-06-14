@@ -7,12 +7,26 @@ noteApp.addController('editNote', '/editNote', function (document) {
         _view.render(new that.app.NoteView(_note));
     }
 
-    _view.onCancel = function() {
+    function gotoOverview() {
         that.app.routerService.navigateTo('/', true);
+    }
+
+    _view.onCancel = function() {
+        gotoOverview();
     };
 
     _view.onSubmit = function(note) {
+        if (_note === null) {
+            _note = new that.app.Note();
+        }
 
+        _note.title = note.title;
+        _note.description = note.description;
+        _note.importance = Number(note.importance);
+        _note.dueDate = new Date(note.dueDate);
+
+        that.app.dataService.save(_note);
+        gotoOverview();
     };
 
     this.afterActivating = function(){

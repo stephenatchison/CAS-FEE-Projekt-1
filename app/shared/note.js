@@ -16,9 +16,7 @@ window.noteApp.Note = function() {
     }
 }
 
-window.noteApp.Note.prototype.toJSON = function() {
-    return JSON.stringify(this);
-};
+window.noteApp.Note.prototype.constructor = window.noteApp.Note;
 
 window.noteApp.Note.prototype.initFromJSON = function(json) {
     return this.init(JSON.parse(json));

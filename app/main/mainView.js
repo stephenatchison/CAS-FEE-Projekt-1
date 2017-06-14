@@ -3,6 +3,7 @@ window.noteApp.addView('main', function() {
 
     var that = this;
     var $notesElem = null;
+    var $addNewElem = null;
     var $byDueDateElem = null;
     var $byCreationDateElem = null;
     var $byImportanceElem = null;
@@ -20,6 +21,7 @@ window.noteApp.addView('main', function() {
 
     function findRequiredElements(elem) {
         $notesElem = $('#notes', elem);
+        $addNewElem = $('#addNew', elem);
         $byDueDateElem = $('#byDueDate', elem);
         $byCreationDateElem = $('#byCreationDate', elem);
         $byImportanceElem = $('#byImportance', elem);
@@ -98,6 +100,11 @@ window.noteApp.addView('main', function() {
         if ($notesElem != null) {
             $notesElem.on('click', 'button', handleButtonEvent);
             $notesElem.on('change', 'input:checkbox', handleCompletionEvent);
+        }
+
+        if ($addNewElem != null) {
+            $addNewElem.on('click', function() {
+            })
         }
 
         addSortHandler($byDueDateElem, 1);

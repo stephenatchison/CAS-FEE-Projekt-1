@@ -1,8 +1,8 @@
 window.noteApp.NoteView = function(note) {
     var _note = note;
 
-    function formatDate(date) {
-        return (date != null) ? this.moment(date).format('DD.MM.YYYY') : '';
+    function formatDate(date, forInput) {
+        return (date != null) ? this.moment(date).format(forInput ? 'YYYY-MM-DD' : 'DD.MM.YYYY') : '';
     }
 
     if (note != null) {
@@ -12,11 +12,12 @@ window.noteApp.NoteView = function(note) {
         this.importance = _note.importance;
         this.importanceStr = (_note.importance > 0) ? '&#xf0e7;'.repeat(_note.importance) : '';
         this.creationDate = _note.creationDate;
-        this.creationDateStr = formatDate(_note.creationDate);
+        this.creationDateStr = formatDate(_note.creationDate, false);
         this.dueDate = _note.dueDate;
-        this.dueDateStr = formatDate(_note.dueDate);
+        this.dueDateStr = formatDate(_note.dueDate, false);
+        this.dueDateInputStr = formatDate(_note.dueDate, true);
         this.completionDate = _note.completionDate;
-        this.completionDateStr = formatDate(_note.completionDate);
+        this.completionDateStr = formatDate(_note.completionDate, false);
 
         this.isNew = false;
     } else {
