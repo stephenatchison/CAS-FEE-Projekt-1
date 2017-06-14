@@ -18,9 +18,12 @@
     
         <!-- Handlebars templates for the application -->
         <script type="text/x-handlebars-template" id="mainView">
-            <section>
+            <section id="mainControls">
                 <div id="actions">
-                    <button type="button" id="addNew">Hinzufügen</button>
+                    <ul>
+                        <li id="addNew">Hinzufügen</li>
+                        <li id="refresh">Aktualisieren</li>
+                    </ul>
                 </div>
                 <div id="viewOptions">
                     <ul id="sortButtons">
@@ -34,13 +37,17 @@
                 </div>
             </section>
             <section class="notelist" id="notes">
-                {{#each notes}}
-                <article class="note" data-id="{{id}}">
-                    <div><div>{{dueDateStr}}</div><div><label><input type="checkbox" name="completedNotes" value"{{id}}">erledigt</label></div><div>{{completionDateStr}}</div></div>
-                    <div><div><div>{{title}}</div><div class="fa">{{{importanceStr}}}</div></div><div>{{description}}</div><div>created: {{creationDateStr}}</div></div>
-                    <div><button type="button" data-action="edit"><i class="fa fa-pencil"></i></button> <button type="button" data-action="delete"><i class="fa fa-trash"></i></button></div>
-                </article>
-                {{/each}}
+                {{#if noneVisible}}
+                    <div>{{#if noNotes}}Du hast noch keine Notizen erfasst!{{else}}Du hast keine offene Einträge!{{/if}}</div>
+                {{else}}
+                    {{#each notes}}
+                    <article class="note" data-id="{{id}}">
+                        <div><div>{{dueDateStr}}</div><div><label><input type="checkbox" name="completedNotes" value"{{id}}" {{#if completed}}checked="checked"{{/if}}>erledigt</label></div><div>{{completionDateStr}}</div></div>
+                        <div><div><div>{{title}}</div><div class="fa">{{{importanceStr}}}</div></div><div>{{description}}</div><div>created: {{creationDateStr}}</div></div>
+                        <div><button type="button" data-action="edit"><i class="fa fa-pencil"></i></button> <button type="button" data-action="delete"><i class="fa fa-trash"></i></button></div>
+                    </article>
+                    {{/each}}
+                {{/if}}
             </section>
         </script>
     

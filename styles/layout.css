@@ -47,6 +47,10 @@ main {
   max-width: 1200px;
 }
 
+section > div + div {
+  margin-top: 1rem;
+}
+
 #viewOptions {
   display: flex;
   flex-direction: row;
@@ -56,13 +60,13 @@ main {
   margin-bottom: 2rem;
 }
 
-#viewOptions ul {
+#mainControls ul {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
 }
 
-#viewOptions li {
+#mainControls li {
   list-style: none;
   display: inline-block;
   border-width: 1px;
@@ -71,7 +75,7 @@ main {
   cursor: pointer;
 }
 
-#viewOptions li + li {
+#mainControls li + li {
   margin-left: 0.5rem;
 }
 

@@ -10,14 +10,9 @@ window.noteApp.NoteView = function(note) {
         this.title = _note.title;
         this.description = _note.description;
         this.importance = _note.importance;
-        this.importanceStr = (_note.importance > 0) ? '&#xf0e7;'.repeat(_note.importance) : '';
         this.creationDate = _note.creationDate;
-        this.creationDateStr = formatDate(_note.creationDate, false);
         this.dueDate = _note.dueDate;
-        this.dueDateStr = formatDate(_note.dueDate, false);
-        this.dueDateInputStr = formatDate(_note.dueDate, true);
         this.completionDate = _note.completionDate;
-        this.completionDateStr = formatDate(_note.completionDate, false);
 
         this.isNew = false;
     } else {
@@ -25,16 +20,19 @@ window.noteApp.NoteView = function(note) {
         this.title = '';
         this.description = '';
         this.importance = 1;
-        this.importanceStr = (this.importance > 0) ? '&#xf0e7;'.repeat(this.importance) : '';
         this.creationDate = new Date();
-        this.creationDateStr = formatDate(this.creationDate);
         this.dueDate = new Date();
-        this.dueDateStr = formatDate(this.dueDate);
         this.completionDate = null;
-        this.completionDateStr = formatDate(this.completionDate);
 
         this.isNew = true;
     }
+
+    this.importanceStr = (this.importance > 0) ? '&#xf0e7;'.repeat(this.importance) : '';
+    this.creationDateStr = formatDate(this.creationDate, false);
+    this.dueDateStr = formatDate(this.dueDate, false);
+    this.dueDateInputStr = formatDate(this.dueDate, true);
+    this.completionDateStr = formatDate(this.completionDate, false);
+    this.completed = this.completionDate != null;
 }
 
 window.noteApp.NoteView.prototype = { moment: window.moment };

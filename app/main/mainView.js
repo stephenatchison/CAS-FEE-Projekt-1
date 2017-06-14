@@ -21,6 +21,7 @@ window.noteApp.addView('main', function() {
 
     function findRequiredElements(elem) {
         $notesElem = $('#notes', elem);
+        $refreshElem = $('#refresh', elem);
         $addNewElem = $('#addNew', elem);
         $byDueDateElem = $('#byDueDate', elem);
         $byCreationDateElem = $('#byCreationDate', elem);
@@ -74,7 +75,9 @@ window.noteApp.addView('main', function() {
                 }
             } else if (action === 'delete') {
                 if (that.onDeleteNote !== null) {
-                    that.onDeleteNote(id);
+                    if (that.app.window().confirm('Willst Du dieser Eintrag wirklich löschen?')) {
+                        that.onDeleteNote(id);
+                    }
                 }
             } else {
                 console.log('Unknown action: ' + action);
@@ -102,8 +105,19 @@ window.noteApp.addView('main', function() {
             $notesElem.on('change', 'input:checkbox', handleCompletionEvent);
         }
 
+        if ($refreshElem != null) {
+            $refreshElem.on('click', function() {
+                if (that.onRefresh != null) {
+                    that.onRefresh();
+                }
+            })
+        }
+
         if ($addNewElem != null) {
             $addNewElem.on('click', function() {
+                if (that.onAddNewNote != null) {
+                    that.onAddNewNote();
+                }
             })
         }
 
@@ -132,6 +146,8 @@ window.noteApp.addView('main', function() {
         }
     }
 
+    this.onRefresh = null;
+    this.onAddNewNote = null;
     this.onEditNote = null;
     this.onDeleteNote = null;
     this.onNoteCompletedChange = null;

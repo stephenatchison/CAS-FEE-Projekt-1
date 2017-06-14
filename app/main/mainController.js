@@ -73,12 +73,16 @@ noteApp.addController('main', '/', function () {
             _visibleNotes = _notes;
         } else {
             _visibleNotes = _notes.filter(function(note) {
-                return !note.completed; 
+                return !note.completed(); 
             });
         }
     }
 
-    function renderView(filter) {
+    function renderView(load, filter) {
+        if (load) {
+            _notes = that.app.dataService.loadAll();
+        }
+
         if (filter) {
             filterNotes();
         }
@@ -87,12 +91,22 @@ noteApp.addController('main', '/', function () {
 
         _view.render({
             notes: _visibleNotes.map(function(n){ return new that.app.NoteView(n); }),
+            noNotes: _notes.length === 0,
+            noneVisible: _visibleNotes.length === 0,
             showCompleted: _showCompleted,
             sortByDueDate: _sortOrder === 1,
             sortByCreationDate: _sortOrder === 2,
             sortByImportance: _sortOrder === 3,
         });
     }
+
+    _view.onRefresh = function() {
+        renderView(true, true);
+    };
+
+    _view.onAddNewNote = function() {
+        this.app.routerService.navigateTo('/editNote/0', true);
+    };
 
     _view.onEditNote = function(id) {
         let note = _notes.find(n => n.id === id);
@@ -102,28 +116,34 @@ noteApp.addController('main', '/', function () {
     };
 
     _view.onDeleteNote = function(id) {
-
+        if (this.app.dataService.delete(id)) {
+            renderView(true, true);
+        }
     };
 
     _view.onNoteCompletedChange = function(id, completed) {
-
+        let note = _notes.find(n => n.id === id);
+        if (note != null) {
+            note.toggleCompleted();
+            this.app.dataService.save(note);
+            renderView(false, true);
+        }
     };
 
     _view.onSortOrderChange = function(sortOrder) {
         if (_sortOrder !== sortOrder) {
             _sortOrder = sortOrder;
-            renderView(false);
+            renderView(false, false);
         }
     }
 
     _view.onShowCompletedChange = function() {
         _showCompleted = !_showCompleted;
-        renderView(true);
+        renderView(false, true);
     }
 
     this.afterActivating = function(){
-        _notes = this.app.dataService.loadAll();
-        renderView(true);
+        renderView(true, true);
     };
 
     this.beforeDeactivating = function(){

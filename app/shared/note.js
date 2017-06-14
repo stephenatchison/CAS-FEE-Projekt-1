@@ -7,6 +7,14 @@ window.noteApp.Note = function() {
     this.dueDate = null;
     this.completionDate = null;
 
+    this.completed = function() {
+        return this.completionDate !== null;
+    };
+
+    this.toggleCompleted = function() {
+        this.completionDate = this.completed() ? null : new Date();
+    };
+
     if (arguments.length >= 1) {
         if (typeof arguments[0] === 'object') {
             this.init(arguments[0]);
