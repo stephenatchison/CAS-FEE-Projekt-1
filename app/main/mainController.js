@@ -1,4 +1,4 @@
-noteApp.addController('main', '/', function () {
+noteApp.addController('main', '', function () {
     var that = this;
     var _controllerName = 'main';
     var _intervalId = null;
@@ -137,13 +137,13 @@ noteApp.addController('main', '/', function () {
     };
 
     _view.onAddNewNote = function() {
-        this.app.routerService.navigateTo('/editNote', true);
+        this.app.routerService.navigateTo('editNote', true);
     };
 
     _view.onEditNote = function(id) {
         let note = _notes.find(n => n.id === id);
         if (note != null) {
-            this.app.routerService.navigateTo('/editNote/' + id, true);
+            this.app.routerService.navigateTo('editNote/' + id, true);
         }
     };
 

@@ -1,4 +1,4 @@
-noteApp.addController('editNote', '/editNote', function (document) {
+noteApp.addController('editNote', 'editNote', function (document) {
     var that = this;
     var _view = this.app.getView('editNote');
     var _note = null;
@@ -8,7 +8,7 @@ noteApp.addController('editNote', '/editNote', function (document) {
     }
 
     function gotoOverview() {
-        that.app.routerService.navigateTo('/', true);
+        that.app.routerService.navigateTo('', true);
     }
 
     _view.onCancel = function() {

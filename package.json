@@ -13,11 +13,13 @@
   "scripts": {
     "prepublish": "",
     "start": "node index.js",
+    "dev": "nodemon index.js",
     "grunt": "grunt"
   },
   "dependencies": {
-    "finalhandler": "^0.3.6",
-    "serve-static": "^1.9.2",
+    "express": "4.15.3",
+    "body-parser": "1.17.2",
+    "nodemon": "1.11.0",
     "core-js": "2.4.1",
     "handlebars": "4.0.8",
     "jquery": "3.2.1",

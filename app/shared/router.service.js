@@ -1,30 +1,39 @@
 window.noteApp.routerService = new (function(app) {
     var that = this;
     var _app = app;
-    var _baseUri = app.document().baseUri;
+    var _baseUri = app.document().baseURI.toLowerCase();
     var _history = _app.window().history;
     var _routes = [];
+
+    function findControllerForPath(path) {
+        let lowerCasePath = path.toLowerCase();
+        if (lowerCasePath.startsWith(_baseUri)) {
+            lowerCasePath = lowerCasePath.substr(_baseUri.length);
+        }
+        let route = _routes.find(r => lowerCasePath.startsWith(r.path));
+        
+        return (route === null) ? null : route.controllerName;
+    }
 
     this.addRoute = function(path, controllerName) {
         _routes.push( {path: path.toLowerCase(), controllerName: controllerName} );
     }
 
-    this.setInitialController = function(name) {
-        _app.setActiveController(name);
-        _history.replaceState({}, 'Note App', '/');
+    this.setInitialController = function(path) {
+        let controllerName = findControllerForPath(path);
+        if (controllerName != null) {
+            _history.replaceState({}, 'noteApp - ' + controllerName, path);
+            _app.setActiveController(controllerName);
+        }
     };
 
     this.navigateTo = function(path, addToHistory) {
-        let lowerCasePath = path.toLowerCase();
-        let route = _routes.find(function(r) {
-            return lowerCasePath.startsWith(r.path);
-        });
-
-        if (route != null) {
+        let controllerName = findControllerForPath(path);
+        if (controllerName != null) {
             if (addToHistory) {
-                _history.pushState({ noteApp: true }, 'noteApp - ' + route.controllerName, path);
+                _history.pushState({ noteApp: true }, 'noteApp - ' + controllerName, path);
             }
-            _app.setActiveController(route.controllerName);
+            _app.setActiveController(controllerName);
         }
     };
 
@@ -50,7 +59,7 @@ window.noteApp.routerService = new (function(app) {
         console.log(_app.window().location);
         console.log(_app.document().location);
         if (e.state !== null) {
-            that.navigateTo(_app.document().location.pathname, false);
+            that.navigateTo(_app.document().location.href, false);
         }
     });
 })(window.noteApp);

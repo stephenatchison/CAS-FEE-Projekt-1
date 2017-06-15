@@ -42,14 +42,16 @@ window.noteApp.Note.prototype.init = function(obj) {
     return this;
 };
 
-window.noteApp.Note.prototype.update = function(note) {
-    if (this.id === note.id) {
-        this.title = note.title;
-        this.description = note.description;
-        this.importance = note.importance;
-        this.dueDate = note.dueDate;
-        this.completionDate = note.getCompletionDate;
-    }
+window.noteApp.Note.prototype.isSameAs = function(note) {
+    return (note != null)
+        && (note instanceof Note)
+        && (this.id === note.id)
+        && (this.title === note.title)
+        && (this.description === note.description)
+        && (this.importance === note.importance)
+        && (this.creationDate === note.creationDate)
+        && (this.dueDate === note.dueDate)
+        && (this.completionDate === note.completionDate);
 };
 
 window.noteApp.Note.prototype.constructor = window.noteApp.Note;
