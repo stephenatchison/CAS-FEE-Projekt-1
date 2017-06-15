@@ -1,8 +1,7 @@
 window.noteApp.addView('app', function(){
     var that = this;
-    var $ = this.$;
-    var body = this.app.document().body;
-    var themeSelect = this.app.document().getElementById('theme');
+    var body = document.body;
+    var themeSelect = document.getElementById('theme');
 
     var themes = [
         { displayName: 'Hell', className: 'hell' },

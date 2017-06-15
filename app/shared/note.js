@@ -1,4 +1,4 @@
-window.noteApp.Note = function() {
+noteApp.Note = function() {
     this.id = 0;
     this.title = '';
     this.description = '';
@@ -24,13 +24,13 @@ window.noteApp.Note = function() {
     }
 }
 
-window.noteApp.Note.prototype.constructor = window.noteApp.Note;
+noteApp.Note.prototype.constructor = noteApp.Note;
 
-window.noteApp.Note.prototype.initFromJSON = function(json) {
+noteApp.Note.prototype.initFromJSON = function(json) {
     return this.init(JSON.parse(json));
 };
 
-window.noteApp.Note.prototype.init = function(obj) {
+noteApp.Note.prototype.init = function(obj) {
     this.id = obj.id;
     this.title = obj.title;
     this.description = obj.description;
@@ -42,9 +42,9 @@ window.noteApp.Note.prototype.init = function(obj) {
     return this;
 };
 
-window.noteApp.Note.prototype.isSameAs = function(note) {
+noteApp.Note.prototype.isSameAs = function(note) {
     return (note != null)
-        && (note instanceof Note)
+        && (note instanceof noteApp.Note)
         && (this.id === note.id)
         && (this.title === note.title)
         && (this.description === note.description)
@@ -53,5 +53,3 @@ window.noteApp.Note.prototype.isSameAs = function(note) {
         && (this.dueDate === note.dueDate)
         && (this.completionDate === note.completionDate);
 };
-
-window.noteApp.Note.prototype.constructor = window.noteApp.Note;

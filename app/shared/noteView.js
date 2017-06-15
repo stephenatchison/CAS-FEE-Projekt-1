@@ -2,7 +2,7 @@ window.noteApp.NoteView = function(note) {
     var _note = note;
 
     function formatDate(date, forInput) {
-        return (date != null) ? this.moment(date).format(forInput ? 'YYYY-MM-DD' : 'DD.MM.YYYY') : '';
+        return (date != null) ? moment(date).format(forInput ? 'YYYY-MM-DD' : 'DD.MM.YYYY') : '';
     }
 
     if (note != null) {
@@ -35,5 +35,4 @@ window.noteApp.NoteView = function(note) {
     this.completed = this.completionDate != null;
 }
 
-window.noteApp.NoteView.prototype = { moment: window.moment };
 window.noteApp.NoteView.prototype.constructor = window.noteApp.NoteView;

@@ -74,7 +74,7 @@ window.noteApp.addView('main', function() {
                 }
             } else if (action === 'delete') {
                 if (that.onDeleteNote !== null) {
-                    if (that.app.window().confirm('Willst Du dieser Eintrag wirklich löschen?')) {
+                    if (confirm('Willst Du dieser Eintrag wirklich löschen?')) {
                         that.onDeleteNote(id);
                     }
                 }

@@ -1,4 +1,4 @@
-window.noteApp = new (function App(w) {
+window.noteApp = new (function App() {
 
     // active controller
     var _activeController = null;
@@ -15,19 +15,7 @@ window.noteApp = new (function App(w) {
         }
     }
 
-    var _that = this;
-    var _window = w;
-    var _document = w.document;
-    var $ = w.$;
     var _appController;
-
-    this.window = function(){
-        return _window;
-    };
-
-    this.document = function(){
-        return _document;
-    };
 
     this.run = function() {
         // build routing table
@@ -41,7 +29,7 @@ window.noteApp = new (function App(w) {
         _appController = this.getController('app');
         _appController.activate();
 
-        this.routerService.setInitialController(_document.location.href);
+        this.routerService.setInitialController(document.location.href);
     };
 
     this.setActiveController = function(name) {
@@ -51,7 +39,6 @@ window.noteApp = new (function App(w) {
     // Controllers, Views, HtmlGenerators
     _baseObject = {};
     _baseObject.app = this;
-    _baseObject.$ = _window.$;
 
     _baseController = Object.create(_baseObject);
     _baseController.activate = function() {
@@ -91,13 +78,13 @@ window.noteApp = new (function App(w) {
 
 
     _baseView = Object.create(_baseObject);
-    _baseView.targetElement = (function(document) {
-        let elems = _window.document.getElementsByTagName('main');
+    _baseView.targetElement = (function() {
+        let elems = document.getElementsByTagName('main');
         if (elems.length === 0) {
             throw 'No MAIN tag found!';
         }
         return elems[0];
-    })(_window.document);
+    })();
     _baseView.render = function(data) {
         if (typeof(this.beforeRendering) === 'function') {
             this.beforeRendering(this.targetElement, data);
@@ -138,16 +125,16 @@ window.noteApp = new (function App(w) {
     var _htmlGenerators = {};
     this.getHtmlGenerator = function(name) {
         if (!_htmlGenerators.hasOwnProperty(name)) {
-            let templateElem = _window.document.getElementById(name);
+            let templateElem = document.getElementById(name);
             if (templateElem) {
-                _htmlGenerators[name] = _window.Handlebars.compile(templateElem.textContent);
+                _htmlGenerators[name] = Handlebars.compile(templateElem.textContent);
             } else {
                 throw 'A template the name ' + name + ' could not be found in the document!';
             }
         }
         return _htmlGenerators[name];
     };
-})(window);
+})();
 
 //start the application
 $().ready(e => window.noteApp.run());

@@ -30,7 +30,7 @@ noteApp.addController('editNote', 'editNote', function (document) {
     };
 
     this.afterActivating = function(){
-        let tokens = this.app.window().location.pathname.split('/');
+        let tokens = location.pathname.split('/');
         let idx = tokens.indexOf('editNote');
         let id;
         if ((idx >= 0) && (tokens.length > idx + 1)) {

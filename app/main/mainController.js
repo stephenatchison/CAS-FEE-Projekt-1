@@ -118,11 +118,11 @@ noteApp.addController('main', '', function () {
     }
 
     function startAutoRefresh() {
-        _intervalId = that.app.window().setInterval(refreshIfChangesDetected, 1000);
+        _intervalId = setInterval(refreshIfChangesDetected, 1000);
     }
 
     function stopAutoRefresh() {
-        that.app.window().clearInterval(_intervalId);
+        clearInterval(_intervalId);
     }
 
     function refreshIfChangesDetected() {

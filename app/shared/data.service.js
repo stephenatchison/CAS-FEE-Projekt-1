@@ -44,8 +44,8 @@ window.noteApp.dataService = (function(app) {
             return true;
         }
 
-        for(let i = 0, ii = notes.length; i < i; i++) {
-            if (!notes[i].equals(_lastLoadAllResult[i])) {
+        for(let i = 0, ii = notes.length; i < ii; i++) {
+            if (!notes[i].isSameAs(_lastLoadAllResult[i])) {
                 _lastLoadAllResult = notes;
                 return true;
             }

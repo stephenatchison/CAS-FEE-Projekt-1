@@ -1,8 +1,6 @@
 window.noteApp.routerService = new (function(app) {
     var that = this;
-    var _app = app;
-    var _baseUri = app.document().baseURI.toLowerCase();
-    var _history = _app.window().history;
+    var _baseUri = document.baseURI.toLowerCase();
     var _routes = [];
 
     function findControllerForPath(path) {
@@ -22,8 +20,8 @@ window.noteApp.routerService = new (function(app) {
     this.setInitialController = function(path) {
         let controllerName = findControllerForPath(path);
         if (controllerName != null) {
-            _history.replaceState({}, 'noteApp - ' + controllerName, path);
-            _app.setActiveController(controllerName);
+            history.replaceState({}, 'noteApp - ' + controllerName, path);
+            app.setActiveController(controllerName);
         }
     };
 
@@ -31,9 +29,9 @@ window.noteApp.routerService = new (function(app) {
         let controllerName = findControllerForPath(path);
         if (controllerName != null) {
             if (addToHistory) {
-                _history.pushState({ noteApp: true }, 'noteApp - ' + controllerName, path);
+                history.pushState({ noteApp: true }, 'noteApp - ' + controllerName, path);
             }
-            _app.setActiveController(controllerName);
+            app.setActiveController(controllerName);
         }
     };
 
@@ -53,13 +51,9 @@ window.noteApp.routerService = new (function(app) {
     });
 
     // capture "history navigation"
-    _app.window().addEventListener('popstate', function(e) {
-        console.log(e);
-        console.log(e.state);
-        console.log(_app.window().location);
-        console.log(_app.document().location);
+    window.addEventListener('popstate', function(e) {
         if (e.state !== null) {
-            that.navigateTo(_app.document().location.href, false);
+            that.navigateTo(document.location.href, false);
         }
     });
 })(window.noteApp);
