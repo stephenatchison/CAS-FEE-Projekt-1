@@ -1,52 +1,63 @@
-noteApp.addController('editNote', 'editNote', function (document) {
-    var that = this;
-    var _view = this.app.getView('editNote');
-    var _note = null;
+import {Controller} from "../shared/controller";
+import {EditNoteView} from "./editNoteView";
+import {Note} from "../shared/note";
+import {NoteView} from "../shared/noteView";
 
-    function renderView() {
-        _view.render(new that.app.NoteView(_note));
+export class EditNoteController extends Controller {
+    constructor(app) {
+        super(app, 'editNote', EditNoteView);
+        this.__note = null;
     }
 
-    function gotoOverview() {
-        that.app.routerService.navigateTo('', true);
-    }
+    activate() {
+        super.activate();
 
-    _view.onCancel = function() {
-        gotoOverview();
-    };
-
-    _view.onSubmit = function(note) {
-        if (_note === null) {
-            _note = new that.app.Note();
-        }
-
-        _note.title = note.title;
-        _note.description = note.description;
-        _note.importance = Number(note.importance);
-        _note.dueDate = new Date(note.dueDate);
-
-        that.app.dataService.saveNote(_note);
-        gotoOverview();
-    };
-
-    this.afterActivating = function(){
         let tokens = location.pathname.split('/');
-        let idx = tokens.indexOf('editNote');
+        let idx = tokens.indexOf(this.name);
         let id;
+
         if ((idx >= 0) && (tokens.length > idx + 1)) {
             id = Number(tokens[tokens.length - 1]);
         } else {
             id = 0;
         }
         if (id === 0) {
-            _note = null;
+            this.__note = null;
         } else {
-            _note = this.app.dataService.loadNote(id);
+            this.__note = this.noteService.loadNote(id);
         }
-        renderView();
+        this.__renderView();
     };
 
-    this.beforeDeactivating = function(){
-        _view.destroy();
+    deactivate() {
+        super.deactivate();
     };
-});
+
+    initView(view) {
+        view.onCancel = () => {
+            this.__gotoOverview();
+        };
+
+        view.onSubmit = (note) => {
+            if (this.__note === null) {
+                this.__note = new Note();
+            }
+
+            this.__note.title = note.title;
+            this.__note.description = note.description;
+            this.__note.importance = Number(note.importance);
+            this.__note.dueDate = new Date(note.dueDate);
+
+            this.noteService.saveNote(this.__note);
+            this.__gotoOverview();
+        };
+    }
+
+    __renderView() {
+        this.view.render(new NoteView(this.__note));
+    }
+
+    __gotoOverview() {
+        this.navigateTo('', true);
+    }
+}

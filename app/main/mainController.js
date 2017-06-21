@@ -1,32 +1,73 @@
-noteApp.addController('main', '', function () {
-    var that = this;
-    var _controllerName = 'main';
-    var _intervalId = null;
-    var _notes = [];
-    var _visibleNotes;
-    var _sortedNotes;
+import {Controller} from "../shared/controller";
+import {MainView} from "./mainView";
+import {NoteView} from "../shared/noteView";
 
-    var _config;
+export class MainController extends Controller {
+    constructor(app) {
+        super(app, 'main', MainView);
 
-    var _view = this.app.getView(_controllerName);
+        this.__notes = [];
+        this.__visibleNotes = [];
+        this.__intervalId = null;
+        this.__sortedNotes;
+    }
 
-    function loadConfig() {
-        let config = that.app.dataService.loadConfig(_controllerName);
-        if (config === null) {
-            config = {};
+    activate() {
+        super.activate();
+        this.__renderView(true, true);
+        this.__startAutoRefresh();
+    };
+
+    deactivate() {
+        this.__stopAutoRefresh();
+        super.deactivate();
+    };
+
+    initView(view) {
+        view.onRefresh = () => {
+            this.__renderView(true, true);
+        };
+
+        view.onAddNewNote = () => {
+            this.navigateTo('editNote', true);
+        };
+
+        view.onEditNote = id => {
+            let note = this.__notes.find(n => n.id === id);
+            if (note != null) {
+                this.navigateTo('editNote/' + id, true);
+            }
+        };
+
+        view.onDeleteNote = id => {
+            if (this.noteService.deleteNote(id)) {
+                this.__renderView(true, true);
+            }
+        };
+
+        view.onNoteCompletedChange = (id, completed) => {
+            let note = this.__notes.find(n => n.id === id);
+            if (note != null) {
+                note.toggleCompleted();
+                this.noteService.saveNote(note);
+                this.__renderView(false, true);
+            }
+        };
+
+        view.onSortOrderChange = sortOrder => {
+            if (this.config.sortOrder !== sortOrder) {
+                this.config.sortOrder = sortOrder;
+                this.__renderView(false, false);
+            }
         }
 
-        config.showCompleted = config.showCompleted || false;
-        config.sortOrder = config.sortOrder || 1;
-
-        _config = config;
+        view.onShowCompletedChange = () => {
+            this.config.showCompleted = !this.config.showCompleted;
+            this.__renderView(false, true);
+        }
     }
 
-    function saveConfig() {
-        that.app.dataService.saveConfig(_controllerName, _config);
-    }
-
-    function compareDates(d1, d2) {
+    __compareDates(d1, d2) {
         if ((d1 === null) || (d2 === null)) {
             if ((d1 === null) && (d2 === null)) {
                 return 0;
@@ -40,23 +81,23 @@ noteApp.addController('main', '', function () {
         }
     }
 
-    function compareNotesByDueDate(a, b) {
-        let val = compareDates(a.dueDate, b.dueDate);
+    __compareNotesByDueDate(a, b) {
+        let val = this.__compareDates(a.dueDate, b.dueDate);
         if (val === 0) {
             val = b.importance - a.importance;
         }
         return val;
     }
 
-    function compareNotesByCreationDate(a, b) {
-        let val = compareDates(a.creationDate, b.creationDate);
+    __compareNotesByCreationDate(a, b) {
+        let val = this.__compareDates(a.creationDate, b.creationDate);
         if (val === 0) {
             val = b.importance - a.importance;
         }
         return val;
     }
 
-    function compareNotesByImportance(a, b) {
+    __compareNotesByImportance(a, b) {
         let val = b.importance - a.importance;
         if (val === 0) {
             val = a.dueDate - b.dueDate;
@@ -64,125 +105,69 @@ noteApp.addController('main', '', function () {
         return val;
     }
 
-    function sortNotes() {
+    __sortNotes() {
         // determine the compare function to use for sorting the notes
         let compareFunc = null;
-        switch(_config.sortOrder) {
+        switch(this.config.sortOrder) {
             case 1:
-                compareFunc = compareNotesByDueDate;
+                compareFunc = this.__compareNotesByDueDate;
                 break;
             case 2:
-                compareFunc = compareNotesByCreationDate;
+                compareFunc = this.__compareNotesByCreationDate;
                 break;
             case 3:
-                compareFunc = compareNotesByImportance;
+                compareFunc = this.__compareNotesByImportance;
                 break;
             default:
                 throw 'Unknown sort order!';
         }
 
         // sort the notes
-        _visibleNotes.sort(compareFunc);
+        this.__visibleNotes.sort(compareFunc.bind(this));
     }
 
-    function filterNotes() {
-        if (_config.showCompleted) {
-            _visibleNotes = _notes;
+    __filterNotes() {
+        if (this.config.showCompleted) {
+            this.__visibleNotes = this.__notes;
         } else {
-            _visibleNotes = _notes.filter(function(note) {
-                return !note.completed(); 
-            });
+            this.__visibleNotes = this.__notes.filter(note => !note.completed); 
         }
     }
 
-    function renderView(load, filter) {
+    __renderView(load, filter) {
         if (load) {
-            _notes = that.app.dataService.loadAllNotes(true);
+            this.__notes = this.noteService.loadAllNotes(true);
         }
 
         if (filter) {
-            filterNotes();
+            this.__filterNotes();
         }
 
-        sortNotes();
+        this.__sortNotes();
 
-        _view.render({
-            notes: _visibleNotes.map(function(n){ return new that.app.NoteView(n); }),
-            noNotes: _notes.length === 0,
-            noneVisible: _visibleNotes.length === 0,
-            showCompleted: _config.showCompleted,
-            sortByDueDate: _config.sortOrder === 1,
-            sortByCreationDate: _config.sortOrder === 2,
-            sortByImportance: _config.sortOrder === 3,
+        this.view.render({
+            notes: this.__visibleNotes.map(note => new NoteView(note)),
+            noNotes: this.__notes.length === 0,
+            noneVisible: this.__visibleNotes.length === 0,
+            showCompleted: this.config.showCompleted,
+            sortByDueDate: this.config.sortOrder === 1,
+            sortByCreationDate: this.config.sortOrder === 2,
+            sortByImportance: this.config.sortOrder === 3,
         });
     }
 
-    function startAutoRefresh() {
-        _intervalId = setInterval(refreshIfChangesDetected, 1000);
+    __startAutoRefresh() {
+        this.__intervalId = setInterval(this.__refreshIfChangesDetected.bind(this), 1000);
     }
 
-    function stopAutoRefresh() {
-        clearInterval(_intervalId);
+    __stopAutoRefresh() {
+        clearInterval(this.__intervalId);
     }
 
-    function refreshIfChangesDetected() {
-        if (that.app.dataService.getChangesAvailable()) {
-            _notes = that.app.dataService.loadAllNotes(false);
-            renderView(false, true);
+    __refreshIfChangesDetected() {
+        if (this.noteService.getChangesAvailable()) {
+            this.__notes = this.noteService.loadAllNotes(false);
+            this.__renderView(false, true);
         }
     }
-
-    _view.onRefresh = function() {
-        renderView(true, true);
-    };
-
-    _view.onAddNewNote = function() {
-        this.app.routerService.navigateTo('editNote', true);
-    };
-
-    _view.onEditNote = function(id) {
-        let note = _notes.find(n => n.id === id);
-        if (note != null) {
-            this.app.routerService.navigateTo('editNote/' + id, true);
-        }
-    };
-
-    _view.onDeleteNote = function(id) {
-        if (this.app.dataService.deleteNote(id)) {
-            renderView(true, true);
-        }
-    };
-
-    _view.onNoteCompletedChange = function(id, completed) {
-        let note = _notes.find(n => n.id === id);
-        if (note != null) {
-            note.toggleCompleted();
-            this.app.dataService.saveNote(note);
-            renderView(false, true);
-        }
-    };
-
-    _view.onSortOrderChange = function(sortOrder) {
-        if (_config.sortOrder !== sortOrder) {
-            _config.sortOrder = sortOrder;
-            renderView(false, false);
-        }
-    }
-
-    _view.onShowCompletedChange = function() {
-        _config.showCompleted = !_config.showCompleted;
-        renderView(false, true);
-    }
-
-    this.afterActivating = function() {
-        loadConfig();
-        renderView(true, true);
-        startAutoRefresh();
-    };
-
-    this.beforeDeactivating = function() {
-        stopAutoRefresh();
-        saveConfig();
-        _view.destroy();
-    };
-});
+}

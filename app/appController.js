@@ -1,8 +1,16 @@
-window.noteApp.addController('app', null, function(){
-    var _view = this.app.getView('app');
-    _view.themeChanged = name => {
-        _view.setTheme(name);
-    };
+import {AppView} from "./appView";
+import {Controller} from "./shared/controller";
 
-    _view.setTheme('hell');
-});
+export class AppController extends Controller {
+    constructor(app) {
+        super(app, "app", AppView)
+    }
+
+    initView(view) {
+        view.themeChanged = name => {
+            view.setTheme(name);
+        };
+
+        view.setTheme('hell');
+    }
+}

@@ -1,38 +1,38 @@
-window.noteApp.NoteView = function(note) {
-    var _note = note;
+export class NoteView {
+    constructor(note) {
+        this.__note = note;
 
-    function formatDate(date, forInput) {
+        if (note != null) {
+            this.id = this.__note.id;
+            this.title = this.__note.title;
+            this.description = this.__note.description;
+            this.importance = this.__note.importance;
+            this.creationDate = this.__note.creationDate;
+            this.dueDate = this.__note.dueDate;
+            this.completionDate = this.__note.completionDate;
+
+            this.isNew = false;
+        } else {
+            this.id = 0;
+            this.title = '';
+            this.description = '';
+            this.importance = 1;
+            this.creationDate = new Date();
+            this.dueDate = new Date();
+            this.completionDate = null;
+
+            this.isNew = true;
+        }
+
+        this.importanceStr = (this.importance > 0) ? '&#xf0e7;'.repeat(this.importance) : '';
+        this.creationDateStr = this.__formatDate(this.creationDate, false);
+        this.dueDateStr = this.__formatDate(this.dueDate, false);
+        this.dueDateInputStr = this.__formatDate(this.dueDate, true);
+        this.completionDateStr = this.__formatDate(this.completionDate, false);
+        this.completed = this.completionDate != null;
+    }
+
+    __formatDate(date, forInput) {
         return (date != null) ? moment(date).format(forInput ? 'YYYY-MM-DD' : 'DD.MM.YYYY') : '';
     }
-
-    if (note != null) {
-        this.id = _note.id;
-        this.title = _note.title;
-        this.description = _note.description;
-        this.importance = _note.importance;
-        this.creationDate = _note.creationDate;
-        this.dueDate = _note.dueDate;
-        this.completionDate = _note.completionDate;
-
-        this.isNew = false;
-    } else {
-        this.id = 0;
-        this.title = '';
-        this.description = '';
-        this.importance = 1;
-        this.creationDate = new Date();
-        this.dueDate = new Date();
-        this.completionDate = null;
-
-        this.isNew = true;
-    }
-
-    this.importanceStr = (this.importance > 0) ? '&#xf0e7;'.repeat(this.importance) : '';
-    this.creationDateStr = formatDate(this.creationDate, false);
-    this.dueDateStr = formatDate(this.dueDate, false);
-    this.dueDateInputStr = formatDate(this.dueDate, true);
-    this.completionDateStr = formatDate(this.completionDate, false);
-    this.completed = this.completionDate != null;
 }
-
-window.noteApp.NoteView.prototype.constructor = window.noteApp.NoteView;

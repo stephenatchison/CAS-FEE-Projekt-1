@@ -1,15 +1,49 @@
-window.noteApp.addView('main', function() {
-    this.viewName = 'mainView';
+import {View} from "../shared/view";
 
-    var that = this;
-    var $notesElem = null;
-    var $addNewElem = null;
-    var $byDueDateElem = null;
-    var $byCreationDateElem = null;
-    var $byImportanceElem = null;
-    var $showCompletedElem = null;
+export class MainView extends View {
+    constructor() {
+        super('mainView', true);
 
-    function setActive($elem, isActive) {
+        this.onAddNewNote = null;
+        this.onEditNote = null;
+        this.onDeleteNote = null;
+        this.onNoteCompletedChange = null;
+        this.onSortOrderChange = null;
+        this.onShowCompletedChange = null;
+
+        this.__$notesElem = null;
+        this.__$addNewElem = null;
+        this.__$byDueDateElem = null;
+        this.__$byCreationDateElem = null;
+        this.__$byImportanceElem = null;
+        this.__$showCompletedElem = null;
+    }
+
+    destroy() {
+        this.__removeEventHandlers();
+        super.destroy();
+    }
+
+    render(data) {
+        this.__removeEventHandlers();
+
+        let elem = super.render(data);
+
+        this.__findRequiredElements(elem);
+        this.__addEventHandlers();
+    }
+
+    setSortOrder(sortOrder) {
+        this.__setActive(this.__$byDueDateElem, sortOrder === 1);
+        this.__setActive(this.__$byCreationDateElem, sortOrder === 2);
+        this.__setActive(this.__$byImportanceElem, sortOrder === 3);
+    };
+
+    setShowCompleted(flag) {
+        this.__setActive(this.__$showCompletedElem, flag);
+    };
+
+    __setActive($elem, isActive) {
         if ($elem != null) {
             if (isActive) {
                 $elem.addClass('active');
@@ -19,63 +53,63 @@ window.noteApp.addView('main', function() {
         }
     }
 
-    function findRequiredElements(elem) {
-        $notesElem = $('#notes', elem);
-        $addNewElem = $('#addNew', elem);
-        $byDueDateElem = $('#byDueDate', elem);
-        $byCreationDateElem = $('#byCreationDate', elem);
-        $byImportanceElem = $('#byImportance', elem);
-        $showCompletedElem = $('#showCompleted', elem);
+    __findRequiredElements(elem) {
+        this.__$notesElem = $('#notes', elem);
+        this.__$addNewElem = $('#addNew', elem);
+        this.__$byDueDateElem = $('#byDueDate', elem);
+        this.__$byCreationDateElem = $('#byCreationDate', elem);
+        this.__$byImportanceElem = $('#byImportance', elem);
+        this.__$showCompletedElem = $('#showCompleted', elem);
     }
 
-    function findArticle(elem) {
+    __findArticle(elem) {
         if (elem === null) {
             return null;
         } else if (elem.tagName === 'ARTICLE') {
             return elem;
         } else {
-            return findArticle(elem.parentElement);
+            return this.__findArticle(elem.parentElement);
         }
     }
 
-    function handleSetSortOrder(sortOrder) {
-        if (that.onSortOrderChange != null) {
-            that.onSortOrderChange(sortOrder);
+    __handleSetSortOrder(sortOrder) {
+        if (this.onSortOrderChange != null) {
+            this.onSortOrderChange(sortOrder);
         }
     }
 
-    function handleShowCompletedEvent() {
-        if (that.onShowCompletedChange != null) {
-            that.onShowCompletedChange();
+    __handleShowCompletedEvent() {
+        if (this.onShowCompletedChange != null) {
+            this.onShowCompletedChange();
         }
     }
 
-    function handleCompletionEvent(e) {
-        let article = findArticle(e.currentTarget);
+    __handleCompletionEvent(e) {
+        let article = this.__findArticle(e.currentTarget);
         if (article != null) {
             let id = Number(article.dataset.id);
-            if (that.onNoteCompletedChange !== null) {
-                that.onNoteCompletedChange(id, e.currentTarget.value);
+            if (this.onNoteCompletedChange !== null) {
+                this.onNoteCompletedChange(id, e.currentTarget.value);
             }
         } else {
             console.log('No article found!');
         }
     }
 
-    function handleButtonEvent(e) {
-        let article = findArticle(e.currentTarget);
+    __handleButtonEvent(e) {
+        let article = this.__findArticle(e.currentTarget);
         if (article != null) {
             let id = Number(article.dataset.id);
             let action = e.currentTarget.dataset.action;
 
             if (action === 'edit') {
-                if (that.onEditNote !== null) {
-                    that.onEditNote(id);
+                if (this.onEditNote !== null) {
+                    this.onEditNote(id);
                 }
             } else if (action === 'delete') {
-                if (that.onDeleteNote !== null) {
+                if (this.onDeleteNote !== null) {
                     if (confirm('Willst Du dieser Eintrag wirklich löschen?')) {
-                        that.onDeleteNote(id);
+                        this.onDeleteNote(id);
                     }
                 }
             } else {
@@ -86,90 +120,54 @@ window.noteApp.addView('main', function() {
         }
     }
 
-    function addSortHandler($elem, sortOrder, rootElem) {
+    __addSortHandler($elem, sortOrder, rootElem) {
         if ($elem != null) {
-            $elem.on('click', handleSetSortOrder.bind(that, sortOrder));
+            $elem.on('click', this.__handleSetSortOrder.bind(this, sortOrder));
         }
     }
 
-    function removeSortHandler($elem) {
+    __removeSortHandler($elem) {
         if ($elem != null) {
             $elem.off('click');
         }
     }
 
-    function addEventHandlers() {
-        if ($notesElem != null) {
-            $notesElem.on('click', 'button', handleButtonEvent);
-            $notesElem.on('change', 'input:checkbox', handleCompletionEvent);
+    __addEventHandlers() {
+        if (this.__$notesElem != null) {
+            this.__$notesElem.on('click', 'button', this.__handleButtonEvent.bind(this));
+            this.__$notesElem.on('change', 'input:checkbox', this.__handleCompletionEvent.bind(this));
         }
 
-        if ($addNewElem != null) {
-            $addNewElem.on('click', function() {
-                if (that.onAddNewNote != null) {
-                    that.onAddNewNote();
+        if (this.__$addNewElem != null) {
+            this.__$addNewElem.on('click', (function() {
+                if (this.onAddNewNote != null) {
+                    this.onAddNewNote();
                 }
-            })
+            }).bind(this));
         }
 
-        addSortHandler($byDueDateElem, 1);
-        addSortHandler($byCreationDateElem, 2);
-        addSortHandler($byImportanceElem, 3);
+        this.__addSortHandler(this.__$byDueDateElem, 1);
+        this.__addSortHandler(this.__$byCreationDateElem, 2);
+        this.__addSortHandler(this.__$byImportanceElem, 3);
 
-        if ($showCompletedElem != null) {
-            $showCompletedElem.on('click', handleShowCompletedEvent);
-        }
-    }
-
-
-    function removeEventHandlers() {
-        if ($notesElem != null) {
-            $notesElem.off('click');
-            $notesElem = null;
-        }
-
-        removeSortHandler($byDueDateElem);
-        removeSortHandler($byCreationDateElem);
-        removeSortHandler($byImportanceElem);
-
-        if ($showCompletedElem != null) {
-            $showCompletedElem.off('click');
+        if (this.__$showCompletedElem != null) {
+            this.__$showCompletedElem.on('click', this.__handleShowCompletedEvent.bind(this));
         }
     }
 
-    this.onAddNewNote = null;
-    this.onEditNote = null;
-    this.onDeleteNote = null;
-    this.onNoteCompletedChange = null;
-    this.onSortOrderChange = null;
-    this.onShowCompletedChange = null;
 
-    this.setSortOrder = function(sortOrder) {
-        setActive($byDueDateElem, sortOrder === 1);
-        setActive($byCreationDateElem, sortOrder === 2);
-        setActive($byImportanceElem, sortOrder === 3);
-    };
+    __removeEventHandlers() {
+        if (this.__$notesElem != null) {
+            this.__$notesElem.off('click');
+            this.__$notesElem = null;
+        }
 
-    this.setShowCompleted = function(flag) {
-        setActive($showCompletedElem, flag);
-    };
+        this.__removeSortHandler(this.__$byDueDateElem);
+        this.__removeSortHandler(this.__$byCreationDateElem);
+        this.__removeSortHandler(this.__$byImportanceElem);
 
-    // this.afterActivating = function() {
-    // };
-
-    // this.beforeDeactivating = function() {
-    // };
-
-    this.onDestroy = function() {
-        removeEventHandlers();
+        if (this.__$showCompletedElem != null) {
+            this.__$showCompletedElem.off('click');
+        }
     }
-
-    this.beforeRendering = function(elem) {
-        removeEventHandlers();
-    }
-
-    this.afterRendering = function(elem) {
-        findRequiredElements(elem);
-        addEventHandlers();
-    };
-});
+}
