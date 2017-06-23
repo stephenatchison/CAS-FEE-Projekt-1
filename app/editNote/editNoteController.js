@@ -7,6 +7,7 @@ export class EditNoteController extends Controller {
     constructor(app) {
         super(app, 'editNote', EditNoteView);
         this.__note = null;
+        this.__changedNote = null;
     }
 
     activate() {
@@ -27,6 +28,7 @@ export class EditNoteController extends Controller {
             this.__note = this.noteService.loadNote(id);
         }
         this.__renderView();
+        this.view.initAndFocusOnFirstField();
     };
 
     deactivate() {
@@ -43,14 +45,12 @@ export class EditNoteController extends Controller {
                 this.__note = new Note();
             }
 
-            this.__note.title = note.title;
-            this.__note.description = note.description;
-            this.__note.importance = Number(note.importance);
-            this.__note.dueDate = new Date(note.dueDate);
-
-            this.noteService.saveNote(this.__note);
+            this.__updateChangedNote(note);
+            this.noteService.saveNote(this.__changedNote);
             this.__gotoOverview();
         };
+
+        view.onValidate = (note) => this.__getChangesCanBeSubmitted(note);
     }
 
     __renderView() {
@@ -59,5 +59,21 @@ export class EditNoteController extends Controller {
 
     __gotoOverview() {
         this.navigateTo('', true);
+    }
+
+    __getChangesCanBeSubmitted(note) {
+        this.__updateChangedNote(note);
+        return this.__changedNote.isSameAs(this.__note) ? false : this.__changedNote.isValid();
+    }
+
+    __updateChangedNote(note) {
+        if (this.__changedNote === null) {
+            this.__changedNote = this.__note === null ? new Note() : new Note(this.__note);
+        }
+
+        this.__changedNote.title = note.title;
+        this.__changedNote.description = note.description;
+        this.__changedNote.importance = Number(note.importance);
+        this.__changedNote.dueDate = new Date(note.dueDate);
     }
 }

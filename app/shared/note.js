@@ -23,6 +23,10 @@ export class Note {
         this.completionDate = this.completed ? null : new Date();
     };
 
+    isValid() {
+        return this.title.length > 0;
+    }
+
     isSameAs(note) {
         return (note != null)
             && (note instanceof Note)
@@ -33,7 +37,7 @@ export class Note {
             && (this.creationDate === note.creationDate)
             && (this.dueDate === note.dueDate)
             && (this.completionDate === note.completionDate);
-    };
+    };    
 
     __initFromJSON(json) {
         return this.__init(JSON.parse(json));
