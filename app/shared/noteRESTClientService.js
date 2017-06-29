@@ -22,11 +22,11 @@ export class NoteRESTClientService {
         let method, path;
 
         if (note.hasOwnProperty('_id')) {
-            let method = 'PUT';
-            let path = 'notes/' + _id;
+            method = 'PUT';
+            path = 'notes/' + _id;
         } else {
-            let method = 'POST';
-            let path = 'notes';
+            method = 'POST';
+            path = 'notes';
         }
 
         return this.__sendRequest(method, path, note);
