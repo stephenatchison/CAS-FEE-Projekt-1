@@ -15,11 +15,17 @@ export class MainController extends Controller {
     activate() {
         super.activate();
         this.__renderView(true, true);
-        this.__startAutoRefresh();
+
+        if (this.config.autoRefresh) {
+            this.__startAutoRefresh();
+        }
     };
 
     deactivate() {
-        this.__stopAutoRefresh();
+        if (this.config.autoRefresh) {
+            this.__stopAutoRefresh();
+        }
+    
         super.deactivate();
     };
 
@@ -73,6 +79,17 @@ export class MainController extends Controller {
         view.onShowCompletedChange = () => {
             this.config.showCompleted = !this.config.showCompleted;
             this.__renderView(false, true);
+        }
+
+        view.onAutoRefreshChange = () => {
+            this.config.autoRefresh = !this.config.autoRefresh;
+            if (this.config.autoRefresh) {
+                this.__startAutoRefresh();
+            } else {
+                this.__stopAutoRefresh();
+            }
+
+            this.__renderView(false, false);
         }
     }
 
@@ -159,6 +176,7 @@ export class MainController extends Controller {
                 notes: this.__visibleNotes.map((note, idx) => new NoteView(note, idx)),
                 noNotes: this.__notes.length === 0,
                 noneVisible: this.__visibleNotes.length === 0,
+                autoRefresh: this.config.autoRefresh,
                 showCompleted: this.config.showCompleted,
                 sortByDueDate: this.config.sortOrder === 1,
                 sortByCreationDate: this.config.sortOrder === 2,
@@ -179,6 +197,6 @@ export class MainController extends Controller {
     }
 
     __refreshIfChangesDetected() {
-        this.noteService.getChangesAvailable().then(() => { this.__renderView(true, true, false); });
+        this.noteService.getChangesAvailable().then(() => { this.__renderView(true, true, false); }).catch(() => {});
     }
 }

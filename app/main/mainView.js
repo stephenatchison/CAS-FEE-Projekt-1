@@ -10,6 +10,7 @@ export class MainView extends View {
         this.onNoteCompletedChange = null;
         this.onSortOrderChange = null;
         this.onShowCompletedChange = null;
+        this.onAutoRefreshChange = null;
 
         this.__$notesElem = null;
         this.__$addNewElem = null;
@@ -17,6 +18,7 @@ export class MainView extends View {
         this.__$byCreationDateElem = null;
         this.__$byImportanceElem = null;
         this.__$showCompletedElem = null;
+        this.__$autoRefreshElem = null;
     }
 
     destroy() {
@@ -60,6 +62,7 @@ export class MainView extends View {
         this.__$byCreationDateElem = $('#byCreationDate', elem);
         this.__$byImportanceElem = $('#byImportance', elem);
         this.__$showCompletedElem = $('#showCompleted', elem);
+        this.__$autoRefreshElem = $('#autoRefresh', elem);
     }
 
     __findArticle(elem) {
@@ -81,6 +84,12 @@ export class MainView extends View {
     __handleShowCompletedEvent() {
         if (this.onShowCompletedChange != null) {
             this.onShowCompletedChange();
+        }
+    }
+
+    __handleToggleAutoRefreshEvent() {
+        if (this.onAutoRefreshChange != null) {
+            this.onAutoRefreshChange();
         }
     }
 
@@ -153,6 +162,10 @@ export class MainView extends View {
         if (this.__$showCompletedElem != null) {
             this.__$showCompletedElem.on('click', this.__handleShowCompletedEvent.bind(this));
         }
+
+        if (this.__$autoRefreshElem != null) {
+            this.__$autoRefreshElem.on('click', this.__handleToggleAutoRefreshEvent.bind(this));
+        }
     }
 
 
@@ -168,6 +181,10 @@ export class MainView extends View {
 
         if (this.__$showCompletedElem != null) {
             this.__$showCompletedElem.off('click');
+        }
+
+        if (this.__$autoRefreshElem != null) {
+            this.__$autoRefreshElem.off('click');
         }
     }
 }

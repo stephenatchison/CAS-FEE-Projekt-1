@@ -31,7 +31,7 @@ module.exports = {
         use: {
           loader: 'css-loader',
           options: {
-            sourceMap: true
+            sourceMap: false
           }
         },
         publicPath: '/ui'

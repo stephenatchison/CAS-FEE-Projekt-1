@@ -18,6 +18,7 @@
   background: #ffc;
 }
 
+.hell #actions li.active,
 .hell #sortButtons li.active:hover,
 .hell #viewOptions li.active {
   background-color: blue;

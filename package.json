@@ -14,9 +14,7 @@
     "prepublish": "",
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "grunt": "grunt",
-    "pack": "webpack --config webpack.config.js",
-    "debug": "node --nolazy --debug-brk=5858 index.js"
+    "pack": "webpack --config webpack.config.js"
   },
   "dependencies": {
     "express": "4.15.3",

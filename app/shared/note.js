@@ -27,15 +27,18 @@ export class Note {
     }
 
     isSameAs(note) {
-        return (note != null)
+
+        let result = (note != null)
             && (note instanceof Note)
             && (this._id === note._id)
             && (this.title === note.title)
             && (this.description === note.description)
             && (this.importance === note.importance)
-            && (this.creationDate === note.creationDate)
-            && (this.dueDate === note.dueDate)
-            && (this.completionDate === note.completionDate);
+            && this.__compareDates(this.creationDate, note.creationDate)
+            && this.__compareDates(this.dueDate, note.dueDate)
+            && this.__compareDates(this.completionDate, note.completionDate);
+        
+        return result;
     };    
 
     __initFromJSON(json) {
@@ -55,4 +58,20 @@ export class Note {
 
         return this;
     };
+
+    __compareDates(d1, d2) {
+        let result;
+
+        if ((d1 === null) || (d2 === null)) {
+            if ((d1 === null) && (d2 === null)) {
+                result = true;
+            } else {
+                result = false;
+            }
+        } else {
+            result = d1.getTime() === d2.getTime();
+        }
+
+        return result;
+    }
 }

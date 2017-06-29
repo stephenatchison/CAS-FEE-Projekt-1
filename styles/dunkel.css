@@ -18,6 +18,7 @@
   background: #aaa;
 }
 
+.dunkel #actions li.active,
 .dunkel #sortButtons li.active:hover,
 .dunkel #viewOptions li.active {
   background-color: lightgoldenrodyellow;
