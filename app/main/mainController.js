@@ -15,11 +15,11 @@ export class MainController extends Controller {
     activate() {
         super.activate();
         this.__renderView(true, true);
-        //this.__startAutoRefresh();
+        this.__startAutoRefresh();
     };
 
     deactivate() {
-        //this.__stopAutoRefresh();
+        this.__stopAutoRefresh();
         super.deactivate();
     };
 
@@ -178,13 +178,7 @@ export class MainController extends Controller {
         clearInterval(this.__intervalId);
     }
 
-    async __refreshIfChangesDetected() {
-        try {
-            await this.noteService.getChangesAvailable();
-            this.__renderView(false, true, false);
-        }
-        catch(e) {
-            // ignore exception: it means no refresh required!
-        }
+    __refreshIfChangesDetected() {
+        this.noteService.getChangesAvailable().then(() => { this.__renderView(true, true, false); });
     }
 }
