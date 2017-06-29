@@ -10,7 +10,7 @@ export class EditNoteController extends Controller {
         this.__changedNote = null;
     }
 
-    activate() {
+    async activate() {
         super.activate();
 
         let tokens = location.pathname.split('/');
@@ -22,13 +22,19 @@ export class EditNoteController extends Controller {
         } else {
             id = 0;
         }
+
         if (id === 0) {
             this.__note = null;
         } else {
-            this.__note = this.noteService.loadNote(id);
+            try {
+                this.__note = await this.noteService.loadNote(id);
+            }
+            catch(e) {
+                
+            }
         }
+
         this.__renderView();
-        this.view.initAndFocusOnFirstField();
     };
 
     deactivate() {
@@ -40,14 +46,19 @@ export class EditNoteController extends Controller {
             this.__gotoOverview();
         };
 
-        view.onSubmit = (note) => {
+        view.onSubmit = async (note) => {
             if (this.__note === null) {
                 this.__note = new Note();
             }
 
-            this.__updateChangedNote(note);
-            this.noteService.saveNote(this.__changedNote);
-            this.__gotoOverview();
+            try {
+                this.__updateChangedNote(note);
+                await this.noteService.saveNote(this.__changedNote);
+                this.__gotoOverview();
+            }
+            catch(e) {
+
+            }
         };
 
         view.onValidate = (note) => this.__getChangesCanBeSubmitted(note);
@@ -55,6 +66,7 @@ export class EditNoteController extends Controller {
 
     __renderView() {
         this.view.render(new NoteView(this.__note));
+        this.view.initAndFocusOnFirstField();
     }
 
     __gotoOverview() {

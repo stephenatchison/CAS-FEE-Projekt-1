@@ -2,10 +2,9 @@
 <html>
 	<head>
 		<title>CAS-FEE: Projekt 1 (Notizenapplikation)</title>
-        <link rel="stylesheet" type="text/css" href="/ui/styles/font-awesome.min.css" />
-        <link rel="stylesheet" type="text/css" href="/ui/styles/noteApp.css" />
         <base href="http://localhost:3000/ui/" />
-	</head>
+        <link rel="stylesheet" type="text/css" href="styles/font-awesome.min.css" />
+	<link href="styles/noteApp.css" rel="stylesheet"></head>
 	<body>
         <header>
             <div>Notizen App</div>
@@ -41,7 +40,7 @@
                     <div>{{#if noNotes}}Du hast noch keine Notizen erfasst!{{else}}Du hast keine offene Einträge!{{/if}}</div>
                 {{else}}
                     {{#each notes}}
-                    <article class="note" data-id="{{id}}">
+                    <article tabindex="{{idx}}" data-id="{{id}}">
                         <div><div>{{dueDateStr}}</div><div><label><input type="checkbox" name="completedNotes" value"{{id}}" {{#if completed}}checked="checked"{{/if}}>erledigt</label></div><div>{{completionDateStr}}</div></div>
                         <div><div><div>{{title}}</div><div class="fa">{{{importanceStr}}}</div></div><div>{{description}}</div><div>created: {{creationDateStr}}</div></div>
                         <div><button type="button" data-action="edit"><i class="fa fa-pencil"></i></button> <button type="button" data-action="delete"><i class="fa fa-trash"></i></button></div>
@@ -87,6 +86,5 @@
         <script type="text/javascript" src="scripts/jquery-3.2.1.min.js"></script>
         <script type="text/javascript" src="scripts/handlebars-4.0.8.min.js"></script>
         <script type="text/javascript" src="scripts/moment-2.18.1.min.js"></script>
-        <script type="text/javascript" src="scripts/noteApp.js"></script>
-	</body>
+	<script type="text/javascript" src="./scripts/noteApp.1fe56ec201b890f8a6ab.js"></script></body>
 </html>

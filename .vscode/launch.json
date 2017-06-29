@@ -3,11 +3,14 @@
     "configurations": [
 
         {
-            "type": "chrome",
+            "type": "node",
             "request": "launch",
-            "name": "Launch Chrome against localhost",
-            "url": "http://localhost:3000",
-            "webRoot": "${workspaceRoot}"
+            "name": "Launch Node",
+            "program": "${workspaceRoot}/index.js",
+            "cwd": "${workspaceRoot}",
+            "skipFiles": [
+                "node_modules/**/*.js"
+            ]
         },
         {
             "type": "chrome",

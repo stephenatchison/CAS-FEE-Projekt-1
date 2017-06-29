@@ -15,11 +15,11 @@ export class MainController extends Controller {
     activate() {
         super.activate();
         this.__renderView(true, true);
-        this.__startAutoRefresh();
+        //this.__startAutoRefresh();
     };
 
     deactivate() {
-        this.__stopAutoRefresh();
+        //this.__stopAutoRefresh();
         super.deactivate();
     };
 
@@ -39,18 +39,27 @@ export class MainController extends Controller {
             }
         };
 
-        view.onDeleteNote = id => {
-            if (this.noteService.deleteNote(id)) {
+        view.onDeleteNote = async id => {
+            try {
+                await this.noteService.deleteNote(id);
                 this.__renderView(true, true);
+            }
+            catch(e) {
+                console.log(e);
             }
         };
 
-        view.onNoteCompletedChange = (id, completed) => {
+        view.onNoteCompletedChange = async (id, completed) => {
             let note = this.__notes.find(n => n.id === id);
             if (note != null) {
                 note.toggleCompleted();
-                this.noteService.saveNote(note);
-                this.__renderView(false, true);
+                try {
+                    await this.noteService.saveNote(note);
+                    this.__renderView(false, true);
+                }
+                catch(e) {
+
+                }
             }
         };
 
@@ -134,26 +143,31 @@ export class MainController extends Controller {
         }
     }
 
-    __renderView(load, filter) {
-        if (load) {
-            this.__notes = this.noteService.loadAllNotes(true);
+    async __renderView(load, filter, hitServer = true) {
+        try {
+            if (load) {
+                this.__notes = await this.noteService.loadAllNotes(hitServer);
+            }
+
+            if (filter) {
+                this.__filterNotes();
+            }
+
+            this.__sortNotes();
+
+            this.view.render({
+                notes: this.__visibleNotes.map((note, idx) => new NoteView(note, idx)),
+                noNotes: this.__notes.length === 0,
+                noneVisible: this.__visibleNotes.length === 0,
+                showCompleted: this.config.showCompleted,
+                sortByDueDate: this.config.sortOrder === 1,
+                sortByCreationDate: this.config.sortOrder === 2,
+                sortByImportance: this.config.sortOrder === 3,
+            });
         }
+        catch(e) {
 
-        if (filter) {
-            this.__filterNotes();
         }
-
-        this.__sortNotes();
-
-        this.view.render({
-            notes: this.__visibleNotes.map(note => new NoteView(note)),
-            noNotes: this.__notes.length === 0,
-            noneVisible: this.__visibleNotes.length === 0,
-            showCompleted: this.config.showCompleted,
-            sortByDueDate: this.config.sortOrder === 1,
-            sortByCreationDate: this.config.sortOrder === 2,
-            sortByImportance: this.config.sortOrder === 3,
-        });
     }
 
     __startAutoRefresh() {
@@ -164,10 +178,13 @@ export class MainController extends Controller {
         clearInterval(this.__intervalId);
     }
 
-    __refreshIfChangesDetected() {
-        if (this.noteService.getChangesAvailable()) {
-            this.__notes = this.noteService.loadAllNotes(false);
-            this.__renderView(false, true);
+    async __refreshIfChangesDetected() {
+        try {
+            await this.noteService.getChangesAvailable();
+            this.__renderView(false, true, false);
+        }
+        catch(e) {
+            // ignore exception: it means no refresh required!
         }
     }
 }

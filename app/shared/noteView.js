@@ -1,6 +1,7 @@
 export class NoteView {
-    constructor(note) {
+    constructor(note, idx) {
         this.__note = note;
+        this.__idx = idx;
 
         if (note != null) {
             this.id = this.__note.id;
@@ -31,6 +32,8 @@ export class NoteView {
         this.completionDateStr = this.__formatDate(this.completionDate, false);
         this.completed = this.completionDate != null;
     }
+
+    get idx() { return this.__idx; }
 
     __formatDate(date, forInput) {
         return (date != null) ? moment(date).format(forInput ? 'YYYY-MM-DD' : 'DD.MM.YYYY') : '';

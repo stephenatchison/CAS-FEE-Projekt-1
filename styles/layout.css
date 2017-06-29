@@ -1,7 +1,19 @@
+* {
+  margin:0;
+  padding:0;
+}
+
 body {
-  padding: 0;
-  margin: 0;
-  font-size: 1rem;
+  font-family: arial,sans-serif;
+  font-size:100%;
+  margin:3em;
+  background:#666;
+  color:#fff;
+}
+
+h2, p {
+  font-size:100%;
+  font-weight:normal;
 }
 
 ul {
@@ -18,10 +30,6 @@ header {
   padding: 1rem 0.5rem;
   margin: 0;
   box-sizing: border-box;
-}
-
-header > div:first-child {
-
 }
 
 header > div:last-child {
@@ -79,8 +87,18 @@ section > div + div {
   margin-left: 0.5rem;
 }
 
-article.note {
-  padding: 0.5rem;
+section.notelist {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+section.notelist article {
+  height: 10em;
+  width: 10em;
+  padding: 1em;
+  margin: 1em;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -88,19 +106,19 @@ article.note {
   align-content: flex-start;
 }
 
-article.note + article.note {
+section.notelist article + article {
   margin-top: 2rem;
 }
 
-article.note > div:first-child {
+section.notelist article > div:first-child {
   flex: 0 0 auto;
 }
 
-article.note > div:nth-of-type(2) {
+section.notelist article > div:nth-of-type(2) {
   flex: 0 0 80%;
 }
 
-article.note > div:last-child {
+section.notelist article > div:last-child {
   flex: 0 0 auto;
 }
 

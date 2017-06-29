@@ -7,37 +7,50 @@ export class NoteService {
     }
 
     loadAllNotes(hitServer) {
-        return hitServer ? this.__loadAllNotes(true) : this.__lastLoadAllResult;
+        return hitServer ? this.__loadAllNotes(true) : new Promise((resolve, reject) => { resolve(this.__lastLoadAllResult); });
     }
 
     getChangesAvailable() {
-        return this.__detectIfChangesAvailable();
+        return new Promise((resolve, reject) => {
+            if (this.__detectIfChangesAvailable()) {
+                resolve();
+            } else {
+                reject();
+            }
+        });
     }
 
     loadNote(id) {
-        let strJson = localStorage.getItem(this.__getId(id));
-        return (strJson != null) ? new Note(strJson) : null;
+        return new Promise((resolve, reject) => {
+            let strJson = localStorage.getItem(this.__getId(id));
+            resolve((strJson != null) ? new Note(strJson) : null);
+        });
     }
 
     saveNote(note) {
-        if (note != null) {
-            if (note.id === 0) {
-                note.id = this.__getNextId();
+        return new Promise((resolve, reject) => {
+            if (note != null) {
+                if (note.id === 0) {
+                    note.id = this.__getNextId();
+                }
+                this.__saveNoteToLocalStorage(note);
             }
-            this.__saveNoteToLocalStorage(note);
-        }
-
-        return note;
+            resolve(note);
+        });
     }
 
     deleteNote(id) {
-        let n = this.loadNote(id);
-        if (n != null) {
-            this.__removeNoteFromLocalStorage(n);
-            return true;
-        } else {
-            return false;
-        }
+        return new Promise((resolve, reject) => {
+            this.loadNote(id).then(note => {
+                if (n != null) {
+                    this.__removeNoteFromLocalStorage(n);
+                    resolve();
+                } else {
+                    reject();
+                }
+            })
+            .catch(() => { reject(); });
+        });
     }
 
     __loadAllNotes(keepResult) {

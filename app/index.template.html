@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>CAS-FEE: Projekt 1 (Notizenapplikation)</title>
+        <base href="http://localhost:3000/ui/" />
+        <link rel="stylesheet" type="text/css" href="styles/font-awesome.min.css" />
+	</head>
+	<body>
+        <header>
+            <div>Notizen App</div>
+            <div>
+                <select id="theme">
+                </select>
+            </div>
+        </header>
+        <main></main>
+        <footer>CAS-FEE: Projekt 1 (Notizenapplikation), 2017</footer>
+    
+        <!-- Handlebars templates for the application -->
+        <script type="text/x-handlebars-template" id="mainView">
+            <section id="mainControls">
+                <div id="actions">
+                    <ul>
+                        <li id="addNew">Hinzufügen</li>
+                    </ul>
+                </div>
+                <div id="viewOptions">
+                    <ul id="sortButtons">
+                        <li id="byDueDate" {{#if sortByDueDate}}class="active"{{/if}}>By Due Date</li>
+                        <li id="byCreationDate" {{#if sortByCreationDate}}class="active"{{/if}}>By Creation Date</li>
+                        <li id="byImportance" {{#if sortByImportance}}class="active"{{/if}}>By Importance</li>
+                    </ul>
+                    <ul>
+                        <li id="showCompleted" {{#if showCompleted}}class="active"{{/if}}>Show Completed</li>
+                    </ul>
+                </div>
+            </section>
+            <section class="notelist" id="notes">
+                {{#if noneVisible}}
+                    <div>{{#if noNotes}}Du hast noch keine Notizen erfasst!{{else}}Du hast keine offene Einträge!{{/if}}</div>
+                {{else}}
+                    {{#each notes}}
+                    <article tabindex="{{idx}}" data-id="{{id}}">
+                        <div><div>{{dueDateStr}}</div><div><label><input type="checkbox" name="completedNotes" value"{{id}}" {{#if completed}}checked="checked"{{/if}}>erledigt</label></div><div>{{completionDateStr}}</div></div>
+                        <div><div><div>{{title}}</div><div class="fa">{{{importanceStr}}}</div></div><div>{{description}}</div><div>created: {{creationDateStr}}</div></div>
+                        <div><button type="button" data-action="edit"><i class="fa fa-pencil"></i></button> <button type="button" data-action="delete"><i class="fa fa-trash"></i></button></div>
+                    </article>
+                    {{/each}}
+                {{/if}}
+            </section>
+        </script>
+    
+        <script type="text/x-handlebars-template" id="editNoteView">
+            <h1>{{#if isNew}}Add New Note{{else}}Edit Note{{/if}}</h1>
+            <form novalidate>
+                <div class="formControl">
+                    <label>Titel:</label>
+                    <input type="text" id="title" name="title" value="{{title}}" />
+                </div>
+                <div class="formControl">
+                    <label>Beschreibung:</label>
+                    <textarea id="description" name="description">{{description}}</textarea>
+                </div>
+                <div class="formControl">
+                    <label>Wichtigkeit:</label>
+                    <select id="importance" name="importance" value="{{importance}}">
+                        <option value="1">&#xf0e7;</option>
+                        <option value="2">&#xf0e7;&#xf0e7;</option>
+                        <option value="3">&#xf0e7;&#xf0e7;&#xf0e7;</option>
+                        <option value="4">&#xf0e7;&#xf0e7;&#xf0e7;&#xf0e7;</option>
+                        <option value="5">&#xf0e7;&#xf0e7;&#xf0e7;&#xf0e7;&#xf0e7;</option>
+                    </select>
+                </div>
+                <div class="formControl">
+                    <label>Fälligkeitstermin:</label>
+                    <input type="date" id="dueDate" name="dueDate" value="{{dueDateInputStr}}" />
+                </div>
+                <div id="formButtons">
+                    <button type="button" id="submit">{{#if isNew}}Hinzufügen{{else}}Speichern{{/if}}</button>
+                    <button type="button" id="cancel">Abbrechen</button>
+                </div>
+            </form>
+        </script>
+
+        <!-- Scripts required by the application -->
+        <script type="text/javascript" src="scripts/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript" src="scripts/handlebars-4.0.8.min.js"></script>
+        <script type="text/javascript" src="scripts/moment-2.18.1.min.js"></script>
+	</body>
+</html>

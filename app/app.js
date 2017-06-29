@@ -1,7 +1,12 @@
 import {AppController} from "./appController";
 import {ConfigService} from "./shared/configService";
 import {NoteService} from "./shared/noteService";
+import {NoteRESTClientService} from "./shared/noteRESTClientService";
 import {RouterService} from "./shared/routerService";
+
+import '../styles/layout.css';
+import '../styles/hell.css';
+import '../styles/dunkel.css';
 
 export class NoteApp {
     constructor() {
@@ -19,7 +24,8 @@ export class NoteApp {
     run() {
         // initialise services
         this.__configService = new ConfigService();
-        this.__noteService = new NoteService();
+        this.__noteService = new NoteRESTClientService('http://localhost:3000/');
+//        this.__noteService = new NoteService();
         this.__routerService = new RouterService();
 
         // initialise app view
