@@ -30,8 +30,8 @@ export class NoteService {
     saveNote(note) {
         return new Promise((resolve, reject) => {
             if (note != null) {
-                if (note.id === 0) {
-                    note.id = this.__getNextId();
+                if (note._id === 0) {
+                    note._id = this.__getNextId();
                 }
                 this.__saveNoteToLocalStorage(note);
             }

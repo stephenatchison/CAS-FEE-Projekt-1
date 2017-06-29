@@ -4,7 +4,7 @@ export class NoteView {
         this.__idx = idx;
 
         if (note != null) {
-            this.id = this.__note.id;
+            this._id = this.__note._id;
             this.title = this.__note.title;
             this.description = this.__note.description;
             this.importance = this.__note.importance;
@@ -14,7 +14,7 @@ export class NoteView {
 
             this.isNew = false;
         } else {
-            this.id = 0;
+            this._id = '';
             this.title = '';
             this.description = '';
             this.importance = 1;

@@ -33,7 +33,7 @@ export class MainController extends Controller {
         };
 
         view.onEditNote = id => {
-            let note = this.__notes.find(n => n.id === id);
+            let note = this.__notes.find(n => n._id === id);
             if (note != null) {
                 this.navigateTo('editNote/' + id, true);
             }
@@ -50,7 +50,7 @@ export class MainController extends Controller {
         };
 
         view.onNoteCompletedChange = async (id, completed) => {
-            let note = this.__notes.find(n => n.id === id);
+            let note = this.__notes.find(n => n._id === id);
             if (note != null) {
                 note.toggleCompleted();
                 try {

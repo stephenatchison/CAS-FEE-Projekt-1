@@ -40,8 +40,8 @@
                     <div>{{#if noNotes}}Du hast noch keine Notizen erfasst!{{else}}Du hast keine offene Einträge!{{/if}}</div>
                 {{else}}
                     {{#each notes}}
-                    <article tabindex="{{idx}}" data-id="{{id}}">
-                        <div><div>{{dueDateStr}}</div><div><label><input type="checkbox" name="completedNotes" value"{{id}}" {{#if completed}}checked="checked"{{/if}}>erledigt</label></div><div>{{completionDateStr}}</div></div>
+                    <article tabindex="{{idx}}" data-id="{{_id}}">
+                        <div><div>{{dueDateStr}}</div><div><label><input type="checkbox" name="completedNotes" value"{{_id}}" {{#if completed}}checked="checked"{{/if}}>erledigt</label></div><div>{{completionDateStr}}</div></div>
                         <div><div><div>{{title}}</div><div class="fa">{{{importanceStr}}}</div></div><div>{{description}}</div><div>created: {{creationDateStr}}</div></div>
                         <div><button type="button" data-action="edit"><i class="fa fa-pencil"></i></button> <button type="button" data-action="delete"><i class="fa fa-trash"></i></button></div>
                     </article>

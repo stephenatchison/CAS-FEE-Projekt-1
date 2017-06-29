@@ -87,7 +87,7 @@ export class MainView extends View {
     __handleCompletionEvent(e) {
         let article = this.__findArticle(e.currentTarget);
         if (article != null) {
-            let id = Number(article.dataset.id);
+            let id = article.dataset.id;
             if (this.onNoteCompletedChange !== null) {
                 this.onNoteCompletedChange(id, e.currentTarget.value);
             }
@@ -99,7 +99,7 @@ export class MainView extends View {
     __handleButtonEvent(e) {
         let article = this.__findArticle(e.currentTarget);
         if (article != null) {
-            let id = Number(article.dataset.id);
+            let id = article.dataset.id;
             let action = e.currentTarget.dataset.action;
 
             if (action === 'edit') {

@@ -18,19 +18,19 @@ export class EditNoteController extends Controller {
         let id;
 
         if ((idx >= 0) && (tokens.length > idx + 1)) {
-            id = Number(tokens[tokens.length - 1]);
+            id = tokens[tokens.length - 1];
         } else {
-            id = 0;
+            id = '';
         }
 
-        if (id === 0) {
+        if (id === '') {
             this.__note = null;
         } else {
             try {
                 this.__note = await this.noteService.loadNote(id);
             }
             catch(e) {
-                
+              // note was not found  
             }
         }
 

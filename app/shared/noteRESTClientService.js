@@ -15,21 +15,29 @@ export class NoteRESTClientService {
     }
 
     loadNote(id) {
-        return this.__sendRequest('GET', 'notes/' + id);
+        return new Promise((resolve, reject) => {
+            this.__sendRequest('GET', 'notes/' + id)
+                .then((record) => { resolve(new Note(record)); })
+                .catch((error) => { reject(error); });
+        });
     }
 
     saveNote(note) {
-        let method, path;
+        return new Promise((resolve, reject) => {
+            let method, path;
 
-        if (note.hasOwnProperty('_id')) {
-            method = 'PUT';
-            path = 'notes/' + _id;
-        } else {
-            method = 'POST';
-            path = 'notes';
-        }
+            if (note.hasOwnProperty('_id')) {
+                method = 'PUT';
+                path = 'notes/' + note._id;
+            } else {
+                method = 'POST';
+                path = 'notes';
+            }
 
-        return this.__sendRequest(method, path, note);
+            this.__sendRequest(method, path, note)
+                .then((record) => { resolve((record != null) ? new Note(record) : record); })
+                .catch((error) => { reject(error); });
+        });
     }
 
     deleteNote(id) {
@@ -39,7 +47,8 @@ export class NoteRESTClientService {
     __loadAllNotes(keepResult) {
         return new Promise((resolve, reject) => {
             this.__sendRequest('GET', 'notes')
-                .then((notes) =>{
+                .then((records) =>{
+                    let notes = records.map(r => new Note(r));
                     if (keepResult) {
                         this.__lastLoadAllResult = notes.slice();
                         this.__lastLoadAllResult.sort((a, b) => a._id - b._id);
@@ -96,7 +105,11 @@ export class NoteRESTClientService {
 
             xhr.onload = () => {
                 if ((xhr.status >= 200) && (xhr.status < 300)) {
-                    resolve(JSON.parse(xhr.responseText), xhr);
+                    let data = null;
+                    if ((typeof xhr.responseText === 'string') && (xhr.responseText.length > 1)) {
+                        data = JSON.parse(xhr.responseText);
+                    }
+                    resolve(data);
                 } else {
                     reject(xhr);
                 }

@@ -1,6 +1,5 @@
 export class Note {
     constructor() {
-        this.id = 0;
         this.title = '';
         this.description = '';
         this.importance = 0;
@@ -30,7 +29,7 @@ export class Note {
     isSameAs(note) {
         return (note != null)
             && (note instanceof Note)
-            && (this.id === note.id)
+            && (this._id === note._id)
             && (this.title === note.title)
             && (this.description === note.description)
             && (this.importance === note.importance)
@@ -44,7 +43,9 @@ export class Note {
     };
 
     __init(obj) {
-        this.id = obj.id;
+        if (obj.hasOwnProperty('_id')) {
+            this._id = obj._id;
+        }
         this.title = obj.title;
         this.description = obj.description;
         this.importance = obj.importance;
