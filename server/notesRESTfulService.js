@@ -2,6 +2,8 @@ module.exports = class NotesRESTfulService {
     constructor() { }
 
     init(rootDir, router) {        
+        this.__updateLastOperationTime();
+
         this.__initDataStore(rootDir);
         this.__initRouter(router);
 
@@ -29,14 +31,19 @@ module.exports = class NotesRESTfulService {
     }
 
     __loadNotes(request, response) {
-        this.__datastore.loadAll(
-            (notes) => {
-                this.__sendOk(response, notes || []);
-            },
-            (error) => {
-                this.__sendServerError(response, error);
-            }
-        );
+        if (request.query.hasOwnProperty('version')) {
+            this.__sendOk(response, { version: this.__lastOperationTime });
+        } else {
+            this.__datastore.loadAll(
+                (notes) => {
+                    // send back the data as well as the last operation time (timestamp)
+                    this.__sendOk(response, { notes: notes || [], version: this.__lastOperationTime });
+                },
+                (error) => {
+                    this.__sendServerError(response, error);
+                }
+            );
+        }
     }
 
     __loadNote(request, response) {
@@ -69,6 +76,7 @@ module.exports = class NotesRESTfulService {
                         if (count === 0) {
                             this.__sendNotFound(response);
                         } else {
+                            this.__updateLastOperationTime();
                             this.__sendOk(response);
                         }
                     },
@@ -83,6 +91,9 @@ module.exports = class NotesRESTfulService {
     __deleteNote(request, response) {
         this.__datastore.delete(request.params.id,
             (count) => {
+                if (count > 0) {
+                    this.__updateLastOperationTime();
+                }
                 this.__sendOk(response);
             },
             (error) => {
@@ -97,6 +108,7 @@ module.exports = class NotesRESTfulService {
         } else {
             this.__datastore.add(request.body,
                 (note) => {
+                    this.__updateLastOperationTime();
                     this.__sendOk(response, note, 201);
                 },
                 (error) => {
@@ -104,6 +116,10 @@ module.exports = class NotesRESTfulService {
                 }
             );
         }
+    }
+
+    __updateLastOperationTime() {
+        this.__lastOperationTime = new Date().getTime();
     }
 
     __sendOk(response, data, status = 200) {

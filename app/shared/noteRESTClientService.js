@@ -3,15 +3,18 @@ import {Note} from "./note";
 export class NoteRESTClientService {
     constructor(baseUrl) {
         this.__baseUrl = baseUrl + 'api/';
-        this.__lastLoadAllResult = null;
+        this.__lastTimestamp = 0;
     }
 
-    loadAllNotes(hitServer) {
-        return hitServer ? this.__loadAllNotes(true) : new Promise((resolve, reject) => { resolve(this.__lastLoadAllResult.slice()); });
-    }
-
-    getChangesAvailable() {
-        return this.__detectIfChangesAvailable();
+    loadAllNotes() {
+        return new Promise((resolve, reject) => {
+            this.__sendRequest('GET', 'notes')
+                .then((data) => {
+                    this.__lastTimestamp = data.version;
+                    resolve(data.notes.map(r => new Note(r)));
+                })
+                .catch((error) => { reject(error); });
+        });
     }
 
     loadNote(id) {
@@ -44,53 +47,29 @@ export class NoteRESTClientService {
         return this.__sendRequest('DELETE', 'notes/' + id);
     }
 
-    __loadAllNotes(keepResult) {
+    getChangesAvailable() {
         return new Promise((resolve, reject) => {
-            this.__sendRequest('GET', 'notes')
-                .then((records) =>{
-                    let notes = records.map(r => new Note(r));
-                    if (keepResult) {
-                        this.__lastLoadAllResult = notes.slice();
-                        this.__lastLoadAllResult.sort((a, b) => (a > b) - (a < b));
-                    }
-                    resolve(notes);
-                })
-                .catch((error) => {
-                    reject();
-                });
-        });
-    }
-
-    __detectIfChangesAvailable() {
-        return new Promise((resolve, reject) => {
-            this.__loadAllNotes(false)
-                .then((notes) => {
-                    let changesDetected = false;
-                    notes.sort((a, b) => (a > b) - (a < b));
-                    if (this.__lastLoadAllResult === null) {
-                        changesDetected = true;
-                    }
-
-                    if (notes.length !== this.__lastLoadAllResult.length) {
-                        changesDetected = true;
-                    }
-
-                    for(let i = 0, ii = notes.length; i < ii; i++) {
-                        if (!notes[i].isSameAs(this.__lastLoadAllResult[i])) {
-                            changesDetected = true;
-                            break;
-                        }
-                    }
-
-                    if (changesDetected) {
-                        this.__lastLoadAllResult = notes;
+            this.__loadTimestamp()
+                .then((ts) => {
+                    if (ts > this.__lastTimestamp) {
+                        this.__lastTimestamp = ts;
                         resolve();
                     } else {
                         reject();
                     }
                 })
-                .catch(() => {
-                    reject();
+                .catch(() => { reject() });
+            });
+    }
+
+    __loadTimestamp() {
+        return new Promise((resolve, reject) => {
+            this.__sendRequest('GET', 'notes?version')
+                .then((record) => {
+                    resolve(record.version);
+                })
+                .catch((error) => {
+                    reject(error);
                 });
         });
     }
