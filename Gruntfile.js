@@ -23,7 +23,8 @@ module.exports = function(grunt){
       },
       moment: {
         files: [
-          { src: './node_modules/moment/min/moment.min.js', dest: './static/scripts/moment-2.18.1.min.js' }
+          { src: './node_modules/moment/min/moment.min.js', dest: './static/scripts/moment-2.18.1.min.js' },
+          { src: './node_modules/moment/locale/de-ch.js', dest: './static/scripts/moment-2.18.1.de-ch.js' }
         ]
       }
     }

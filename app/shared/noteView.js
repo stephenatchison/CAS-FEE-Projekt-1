@@ -26,10 +26,10 @@ export class NoteView {
         }
 
         this.importanceStr = (this.importance > 0) ? '&#xf0e7;'.repeat(this.importance) : '';
-        this.creationDateStr = this.__formatDate(this.creationDate, false);
-        this.dueDateStr = this.__formatDate(this.dueDate, false);
+        this.creationDateStr = this.__formatDate(this.creationDate, false, true);
+        this.dueDateStr = this.__formatDate(this.dueDate, false, false);
         this.dueDateInputStr = this.__formatDate(this.dueDate, true);
-        this.completionDateStr = this.__formatDate(this.completionDate, false);
+        this.completionDateStr = this.__formatDate(this.completionDate, false, true);
         this.completed = this.completionDate != null;
     }
 
@@ -43,7 +43,7 @@ export class NoteView {
             let now = moment();
             let dueDate = moment(this.dueDate);
 
-            if (now.isAfter(dueDate)) {
+            if (now.isAfter(dueDate, 'day')) {
                 list.push('overdue');
             } else if (now.isSame(dueDate, 'day')) {
                 list.push('today');
@@ -55,7 +55,33 @@ export class NoteView {
         return list.join(' ');
     }
 
-    __formatDate(date, forInput) {
-        return (date != null) ? moment(date).format(forInput ? 'YYYY-MM-DD' : 'DD.MM.YYYY') : '';
+    __formatDate(date, forInput, includePrefix) {
+        if (forInput) {
+            return (date != null) ? moment(date).format('YYYY-MM-DD') : '';
+        } else {
+            if (date == null) {
+                return '';
+            } else {
+                let momentDate = moment(date);
+                let now = moment();
+                if (momentDate.isSame(now, 'day')) {
+                    return 'heute';
+                } else {
+                    let aWeekAgo = now.clone().subtract(7, 'days');
+                    let inAWeek = now.clone().add(7, 'days');
+                    if (momentDate.isBetween(aWeekAgo, inAWeek, 'day', '[]')) {
+                        if (momentDate.isSame(now.clone().subtract(1, 'day'), 'day')) {
+                            return 'gestern';
+                        } else if (momentDate.isSame(now.clone().add(1, 'day'), 'day')) {
+                            return 'morgen';
+                        } else {
+                            return (momentDate.isAfter(now, 'day') ? 'nächsten ' : 'letzten ') + momentDate.format('dddd');
+                        }
+                    } else {
+                        return (date != null) ? (includePrefix ? 'am ' : '') + moment(date).format(forInput ? 'YYYY-MM-DD' : 'DD.MM.YYYY') : '';
+                    }
+                }
+            }
+        }
     }
 }

@@ -23,7 +23,7 @@ export class Note {
     };
 
     isValid() {
-        return (this.title.length > 0) && (this.dueDate != null);
+        return (this.title.length > 0) && ((this.dueDate != null) && this.__isValidDate(this.dueDate));
     }
 
     isSameAs(note) {
@@ -73,5 +73,9 @@ export class Note {
         }
 
         return result;
+    }
+
+    __isValidDate(date) {
+        return date.getTime() === date.getTime();
     }
 }

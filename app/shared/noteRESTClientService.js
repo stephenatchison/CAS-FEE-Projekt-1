@@ -7,7 +7,7 @@ export class NoteRESTClientService {
     }
 
     loadAllNotes(hitServer) {
-        return hitServer ? this.__loadAllNotes(true) : new Promise((resolve, reject) => { resolve(this.__lastLoadAllResult); });
+        return hitServer ? this.__loadAllNotes(true) : new Promise((resolve, reject) => { resolve(this.__lastLoadAllResult.slice()); });
     }
 
     getChangesAvailable() {
@@ -51,7 +51,7 @@ export class NoteRESTClientService {
                     let notes = records.map(r => new Note(r));
                     if (keepResult) {
                         this.__lastLoadAllResult = notes.slice();
-                        this.__lastLoadAllResult.sort((a, b) => a._id - b._id);
+                        this.__lastLoadAllResult.sort((a, b) => (a > b) - (a < b));
                     }
                     resolve(notes);
                 })
@@ -64,30 +64,26 @@ export class NoteRESTClientService {
     __detectIfChangesAvailable() {
         return new Promise((resolve, reject) => {
             this.__loadAllNotes(false)
-                .then(notes => {
+                .then((notes) => {
                     let changesDetected = false;
-
-                    notes.sort((a, b) => a._id - b._id);
-
+                    notes.sort((a, b) => (a > b) - (a < b));
                     if (this.__lastLoadAllResult === null) {
-                        this.__lastLoadAllResult = notes;
                         changesDetected = true;
                     }
 
                     if (notes.length !== this.__lastLoadAllResult.length) {
-                        this.__lastLoadAllResult = notes;
                         changesDetected = true;
                     }
 
                     for(let i = 0, ii = notes.length; i < ii; i++) {
                         if (!notes[i].isSameAs(this.__lastLoadAllResult[i])) {
-                            this.__lastLoadAllResult = notes;
                             changesDetected = true;
                             break;
                         }
                     }
 
                     if (changesDetected) {
+                        this.__lastLoadAllResult = notes;
                         resolve();
                     } else {
                         reject();

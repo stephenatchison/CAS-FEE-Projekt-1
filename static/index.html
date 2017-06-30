@@ -52,8 +52,8 @@
                                 <div class="fa">{{{importanceStr}}}</div>
                             </div>
                             <div>{{description}}</div>
-                            <div>erledige bis {{dueDateStr}}</div>
-                            <div>notiert am {{creationDateStr}}</div>
+                            <div>{{#if completed}}erledigt {{completionDateStr}}{{else}}erledige bis {{dueDateStr}}{{/if}}</div>
+                            <div>notiert {{creationDateStr}}</div>
                         </div>
                         <div>{{idx}}</div>
                     </article>
@@ -104,5 +104,6 @@
         <script type="text/javascript" src="scripts/jquery-3.2.1.min.js"></script>
         <script type="text/javascript" src="scripts/handlebars-4.0.8.min.js"></script>
         <script type="text/javascript" src="scripts/moment-2.18.1.min.js"></script>
-	<script type="text/javascript" src="./scripts/noteApp.688918dcd301390a9118.js"></script></body>
+        <script type="text/javascript" src="scripts/moment-2.18.1.de-ch.js"></script>
+	<script type="text/javascript" src="./scripts/noteApp.5243bb811aea51d6d162.js"></script></body>
 </html>

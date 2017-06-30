@@ -14,21 +14,22 @@ body.hell {
 }
 
 .hell #actions li.active,
-.hell #sortButtons li.active:hover,
+.hell #sortButtons li.active,
 .hell #viewOptions li.active {
-  background-color: royalblue;
-  border-color: darkblue;
+  background-color: slategray;
+  border-color: darkslategray;
   color: snow;
 }
 
-.hell #sortButtons li:hover {
+.hell #actions li:hover,
+.hell #sortButtons li:hover,
+.hell #viewOptions li:hover {
   background-color: #777;
   border-color: #333;
 }
 
-.hell #actions li:hover {
-  background-color: #777;
-  border-color: #333;
+.hell section.notelist {
+  border-top-color: #ccc;
 }
 
 .hell section.notelist article {

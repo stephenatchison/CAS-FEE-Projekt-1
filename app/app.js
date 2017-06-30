@@ -39,6 +39,8 @@ export class NoteApp {
 
 //start the application as soon as the document is ready
 $().ready(e => {
-    window.noteApp = new NoteApp();
-    window.noteApp.run();
+    moment().locale('de-ch');
+
+    let noteApp = new NoteApp();
+    noteApp.run();
 });

@@ -189,14 +189,15 @@ export class MainController extends Controller {
     }
 
     __startAutoRefresh() {
-        this.__intervalId = setInterval(this.__refreshIfChangesDetected.bind(this), 1000);
+        this.__intervalId = setTimeout(this.__refreshIfChangesDetected.bind(this), 1000);
     }
 
     __stopAutoRefresh() {
-        clearInterval(this.__intervalId);
+        clearTimeout(this.__intervalId);
     }
 
     __refreshIfChangesDetected() {
         this.noteService.getChangesAvailable().then(() => { this.__renderView(true, true, false); }).catch(() => {});
+        this.__startAutoRefresh();
     }
 }
