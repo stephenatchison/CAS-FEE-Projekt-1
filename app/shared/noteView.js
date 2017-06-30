@@ -35,6 +35,26 @@ export class NoteView {
 
     get idx() { return this.__idx; }
 
+    get classes() {
+        let list = [];
+        if (this.completed) {
+            list.push('completed');
+        } else {
+            let now = moment();
+            let dueDate = moment(this.dueDate);
+
+            if (now.isAfter(dueDate)) {
+                list.push('overdue');
+            } else if (now.isSame(dueDate, 'day')) {
+                list.push('today');
+            } else if (dueDate.diff(now, 'days') < 3) {
+                list.push('soon');
+            }
+        }
+
+        return list.join(' ');
+    }
+
     __formatDate(date, forInput) {
         return (date != null) ? moment(date).format(forInput ? 'YYYY-MM-DD' : 'DD.MM.YYYY') : '';
     }

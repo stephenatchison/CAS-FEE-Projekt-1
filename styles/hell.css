@@ -1,4 +1,14 @@
-.hell header {
+body.hell {
+  background-color: #333;
+  color: whitesmoke;
+}
+
+body.hell > div {
+  background-color: white;
+  color: black;
+}
+
+.hell header > div {
   background-color: #d7e;
 }
 

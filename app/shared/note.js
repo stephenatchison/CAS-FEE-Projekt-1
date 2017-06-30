@@ -23,7 +23,7 @@ export class Note {
     };
 
     isValid() {
-        return this.title.length > 0;
+        return (this.title.length > 0) && (this.dueDate != null);
     }
 
     isSameAs(note) {

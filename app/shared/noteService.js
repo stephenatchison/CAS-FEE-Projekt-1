@@ -68,7 +68,7 @@ export class NoteService {
 
         if (keepResult) {
             this.__lastLoadAllResult = notes.slice();
-            this.__lastLoadAllResult.sort((a, b) => a.id - b.id);
+            this.__lastLoadAllResult.sort((a, b) => a._id - b._id);
         }
 
         return notes;
@@ -76,12 +76,12 @@ export class NoteService {
 
     __getNextId() {
         let notes = this.__loadAllNotes(true);
-        return (notes.length === 0) ? 1 : (notes.map(e => e.id).sort((a, b) => b - a))[0] + 1;
+        return (notes.length === 0) ? 1 : (notes.map(e => e._id).sort((a, b) => b - a))[0] + 1;
     }
 
     __detectIfChangesAvailable() {
         let notes = this.__loadAllNotes(false);
-        notes.sort((a, b) => a.id - b.id);
+        notes.sort((a, b) => a._id - b._id);
 
         if (this.__lastLoadAllResult === null) {
             this.__lastLoadAllResult = notes;
@@ -108,10 +108,10 @@ export class NoteService {
     }
 
     __saveNoteToLocalStorage(note) {
-        localStorage.setItem(this.__getId(note.id), JSON.stringify(note));
+        localStorage.setItem(this.__getId(note._id), JSON.stringify(note));
     }
 
     __removeNoteFromLocalStorage(note) {
-        localStorage.removeItem(this.__getId(note.id));
+        localStorage.removeItem(this.__getId(note._id));
     }
 }

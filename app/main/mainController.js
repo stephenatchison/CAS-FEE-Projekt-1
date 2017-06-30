@@ -173,7 +173,7 @@ export class MainController extends Controller {
             this.__sortNotes();
 
             this.view.render({
-                notes: this.__visibleNotes.map((note, idx) => new NoteView(note, idx)),
+                notes: this.__visibleNotes.map((note, idx) => new NoteView(note, idx + 1)),
                 noNotes: this.__notes.length === 0,
                 noneVisible: this.__visibleNotes.length === 0,
                 autoRefresh: this.config.autoRefresh,

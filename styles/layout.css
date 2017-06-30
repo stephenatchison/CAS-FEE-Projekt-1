@@ -7,10 +7,14 @@ body {
   font-family: arial, sans-serif;
   font-size: 100%;
   margin: 3em;
-  background: #666;
-  color: #fff;
 }
-
+/*
+body > div {
+  position: relative;
+  margin: 0 auto;
+  max-width: 1200px;
+}
+*/
 h2, p {
   font-size: 100%;
   font-weight: normal;
@@ -21,22 +25,39 @@ ul {
   margin: 0;
 }
 
+header > div,
+main {
+  padding: 0.5rem;
+/*
+  margin: 0 auto;
+  max-width: 1200px;
+*/
+}
+
+main {
+  display: block;
+  margin-top: 4rem;
+}
+
 header {
-  display: flex;
-  justify-content: space-between;
+  display: block;
   position: fixed;
   top: 0;
   width: 100%;
+}
+
+header > div {
+  display: flex;
+  justify-content: space-between;
   padding: 1rem 0.5rem;
-  margin: 0;
   box-sizing: border-box;
 }
 
-header > div:last-child {
+header > div > div:last-child {
   width: 10rem;
 }
 
-header > div:last-child > select {
+header > div > div:last-child > select {
   width: 100%;
 }
 
@@ -46,13 +67,6 @@ footer {
     margin-top: 0.5rem;
     padding-top: 0.5rem;
     font-style: italic;
-}
-
-main {
-  display: block;
-  padding: 0.5rem;
-  margin: 4rem auto 0 auto;
-  max-width: 1200px;
 }
 
 section > div + div {
@@ -89,57 +103,136 @@ section > div + div {
 }
 
 section.notelist {
+  font-family: Caveat, arial, sans-serif;
+  font-size: 28px;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   flex-wrap: wrap;
 }
 
+section.notelist > div:first-of-type {
+  margin: 2rem;
+  font-size: 200%;
+}
+
 section.notelist article {
-  height: 15em;
-  width: 15em;
-  padding: 1em;
-  margin: 1em;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: baseline;
-  align-content: flex-start;
+  height: 25rem;
+  width: 25rem;
+  padding: 1rem;
+  margin: 2rem;
+  box-shadow: 5px 5px 7px rgba(33,33,33,.7);
+  transition: transform .15s linear;
+  transform: rotate(0deg);
 }
 
-section.notelist article + article {
-  margin-top: 2rem;
+section.notelist article button {
+  padding: 0.25rem;
 }
 
-section.notelist article > div {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: baseline;
+section.notelist article:nth-of-type(even) {
+  transform: rotate(4deg);
+  position: relative;
+  top: 0.25rem;
 }
 
-/* title */
-section.notelist article > div > div:first-child {
+section.notelist article:nth-of-type(3n) {
+  transform: rotate(-3deg);
+  position: relative;
+  top: -0.25rem;
 }
 
-/* importance */
-section.notelist article > div > div:last-child {
+section.notelist article:nth-of-type(5n) {
+  transform: rotate(5deg);
+  position: relative;
+  top: -0.6rem;
 }
 
-section.notelist article > div > div:nth-of-type(2) {
-
-}
-
-section.notelist article > div:first-child {
-  flex: 0 0 auto;
+section.notelist article:hover,
+section.notelist article:focus{
+  box-shadow: 10px 10px 7px rgba(0,0,0,.7);
+  transform: scale(1.25);
+  position:relative;
+  z-index:5;
 }
 
 section.notelist article > div:nth-of-type(2) {
-  flex: 0 0 80%;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  z-index: 2;
+  font-size: 200%;
+  color: #999;
+  padding: 0 0.6rem 0.6rem 0;
+  background-color: transparent;
 }
 
-section.notelist article > div:last-child {
+/* buttons and checkbox line */
+section.notelist article > div:first-of-type > div:nth-of-type(1) {
+  display: none;
+}
+
+section.notelist article:hover > div:first-of-type > div:nth-of-type(1),
+section.notelist article:focus > div:first-of-type > div:nth-of-type(1) {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0;
+  margin-bottom: 1rem;
+}
+
+/* completed */
+section.notelist article > div:first-of-type > div:nth-of-type(1) > div:nth-of-type(1) {
+}
+
+/* buttons */
+section.notelist article > div:first-of-type > div:nth-of-type(1) > div:nth-of-type(2) {
+}
+
+/* title/importance line */
+section.notelist article > div:first-of-type > div:nth-of-type(2) {
+  display: flex;
+  flex-direction: row;
+  padding: 0;
+  border-bottom: 1px solid black;
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* title */
+section.notelist article > div:first-of-type > div:nth-of-type(2) > div:nth-of-type(1) {
+  font-weight: bold;
+  font-size: 140%;
+  flex: 1 1 100%;
+}
+
+/* importance */
+section.notelist article > div:first-of-type > div:nth-of-type(2) > div:nth-of-type(2) {
   flex: 0 0 auto;
+}
+
+/* description */
+section.notelist article > div:first-of-type > div:nth-of-type(3) {
+  max-height: 15rem;
+  margin-bottom: 1rem;
+  white-space: pre-wrap;
+  overflow-y: auto;
+}
+
+section.notelist article:hover > div:first-of-type > div:nth-of-type(3),
+section.notelist article:focus > div:first-of-type > div:nth-of-type(3) {
+  max-height: 12rem;
+}
+
+/* due date */
+section.notelist article > div:first-of-type > div:nth-of-type(4) {
+  font-weight: bold;
+}
+
+/* create date */
+section.notelist article > div:first-of-type > div:nth-of-type(5) {
+  font-size: 20px;
+  color: #999;
 }
 
 .formControl {

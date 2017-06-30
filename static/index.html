@@ -3,18 +3,23 @@
 	<head>
 		<title>CAS-FEE: Projekt 1 (Notizenapplikation)</title>
         <base href="http://localhost:3000/ui/" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Caveat">
         <link rel="stylesheet" type="text/css" href="styles/font-awesome.min.css" />
 	<link href="styles/noteApp.css" rel="stylesheet"></head>
 	<body>
-        <header>
-            <div>Notizen App</div>
-            <div>
-                <select id="theme">
-                </select>
-            </div>
-        </header>
-        <main></main>
-        <footer>CAS-FEE: Projekt 1 (Notizenapplikation), 2017</footer>
+        <div>
+            <header>
+                <div>
+                    <div>Notizen App</div>
+                    <div>
+                        <select id="theme">
+                        </select>
+                    </div>
+                </div>
+            </header>
+            <main></main>
+            <footer>CAS-FEE: Projekt 1 (Notizenapplikation), 2017</footer>
+        </div>
     
         <!-- Handlebars templates for the application -->
         <script type="text/x-handlebars-template" id="mainView">
@@ -44,13 +49,29 @@
                 {{else}}
                     {{#each notes}}
                     <article tabindex="{{idx}}" data-id="{{_id}}">
-                        <div><div>{{dueDateStr}}</div><div><label><input type="checkbox" name="completedNotes" value"{{_id}}" {{#if completed}}checked="checked"{{/if}}>erledigt</label></div><div>{{completionDateStr}}</div></div>
-                        <div><div><div>{{title}}</div><div class="fa">{{{importanceStr}}}</div></div><div>{{description}}</div><div>created: {{creationDateStr}}</div></div>
-                        <div><button type="button" data-action="edit"><i class="fa fa-pencil"></i></button> <button type="button" data-action="delete"><i class="fa fa-trash"></i></button></div>
+                        <div>
+                            <div>
+                                <div><label><input type="checkbox" name="completedNotes" value"{{_id}}" {{#if completed}}checked="checked"{{/if}}>erledigt</label></div>
+                                <div><button type="button" data-action="edit"><i class="fa fa-pencil"></i></button> <button type="button" data-action="delete"><i class="fa fa-trash"></i></button></div>
+                            </div>
+                            <div>
+                                <div>{{title}}</div>
+                                <div class="fa">{{{importanceStr}}}</div>
+                            </div>
+                            <div>{{description}}</div>
+                            <div>erledige bis {{dueDateStr}}</div>
+                            <div>notiert am {{creationDateStr}}</div>
+                        </div>
+                        <div>{{idx}}</div>
                     </article>
                     {{/each}}
                 {{/if}}
             </section>
+            <!--
+                    <div><div>{{dueDateStr}}</div><div><label><input type="checkbox" name="completedNotes" value"{{_id}}" {{#if completed}}checked="checked"{{/if}}>erledigt</label></div><div>{{completionDateStr}}</div></div>
+                    <div><div><div>{{title}}</div><div class="fa">{{{importanceStr}}}</div></div><div>{{description}}</div><div>created: {{creationDateStr}}</div></div>
+                    <div><button type="button" data-action="edit"><i class="fa fa-pencil"></i></button> <button type="button" data-action="delete"><i class="fa fa-trash"></i></button></div>
+            -->
         </script>
     
         <script type="text/x-handlebars-template" id="editNoteView">
@@ -89,5 +110,5 @@
         <script type="text/javascript" src="scripts/jquery-3.2.1.min.js"></script>
         <script type="text/javascript" src="scripts/handlebars-4.0.8.min.js"></script>
         <script type="text/javascript" src="scripts/moment-2.18.1.min.js"></script>
-	<script type="text/javascript" src="./scripts/noteApp.90ed433e23d203b444dc.js"></script></body>
+	<script type="text/javascript" src="./scripts/noteApp.d892247c1c085e3d09ff.js"></script></body>
 </html>

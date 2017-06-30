@@ -11,9 +11,10 @@
   "license": "MIT",
   "homepage": "https://github.com/stephenatchison/CAS-FEE-Projekt-1",
   "scripts": {
-    "prepublish": "",
+    "prepare": "npm run grunt && npm run pack",
     "start": "node index.js",
     "dev": "nodemon index.js",
+    "grunt": "grunt",
     "pack": "webpack --config webpack.config.js"
   },
   "dependencies": {
