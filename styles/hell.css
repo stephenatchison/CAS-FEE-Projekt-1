@@ -1,15 +1,11 @@
 body.hell {
-  background-color: #333;
-  color: whitesmoke;
-}
-
-body.hell > div {
-  background-color: white;
+  background-color: snow;
   color: black;
 }
 
-.hell header > div {
-  background-color: #d7e;
+.hell header {
+  background-color: royalblue;
+  color: snow;
 }
 
 .hell footer {
@@ -17,30 +13,51 @@ body.hell > div {
     color: #ccc;
 }
 
-.hell main {
-  background-color: snow;
-  color: black;
-}
-
-.hell section.notelist article {
-  border-color: transparent;
-  color: #000;
-  background: #ffc;
-}
-
 .hell #actions li.active,
 .hell #sortButtons li.active:hover,
 .hell #viewOptions li.active {
-  background-color: blue;
-  border-color: royalblue;
+  background-color: royalblue;
+  border-color: darkblue;
+  color: snow;
 }
 
 .hell #sortButtons li:hover {
   background-color: #777;
-  border-color: #777;
+  border-color: #333;
 }
 
 .hell #actions li:hover {
   background-color: #777;
   border-color: #333;
+}
+
+.hell section.notelist article {
+  border-color: transparent;
+  color: #000;
+  background-color: #ffc;
+}
+
+.hell section.notelist article.completed {
+  background-color: lightgray;
+}
+
+.hell section.notelist article.overdue {
+  background-color: red;
+}
+
+.hell section.notelist article.today {
+  background-color: orange;
+}
+
+.hell section.notelist article.soon {
+  background-color: lightgreen;
+}
+
+/* create date */
+.hell section.notelist article.overdue > div:first-of-type > div:nth-of-type(5) {
+  color: wheat;
+}
+
+.hell .noteEditor {
+  background-color: #ffc;
 }

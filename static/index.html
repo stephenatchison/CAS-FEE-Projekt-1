@@ -7,19 +7,12 @@
         <link rel="stylesheet" type="text/css" href="styles/font-awesome.min.css" />
 	<link href="styles/noteApp.css" rel="stylesheet"></head>
 	<body>
-        <div>
-            <header>
-                <div>
-                    <div>Notizen App</div>
-                    <div>
-                        <select id="theme">
-                        </select>
-                    </div>
-                </div>
-            </header>
-            <main></main>
-            <footer>CAS-FEE: Projekt 1 (Notizenapplikation), 2017</footer>
-        </div>
+        <header>
+            <div>Notizen App</div>
+            <div><select id="theme"></select></div>
+        </header>
+        <main></main>
+        <footer>CAS-FEE: Projekt 1 (Notizenapplikation), 2017</footer>
     
         <!-- Handlebars templates for the application -->
         <script type="text/x-handlebars-template" id="mainView">
@@ -45,10 +38,10 @@
             </section>
             <section class="notelist" id="notes">
                 {{#if noneVisible}}
-                    <div>{{#if noNotes}}Du hast noch keine Notizen erfasst!{{else}}Du hast keine offene Einträge!{{/if}}</div>
+                    <div>{{#if noNotes}}Du hast noch keine Notizen erfasst!{{else}}Du hast keine offene Notizen!{{/if}}</div>
                 {{else}}
                     {{#each notes}}
-                    <article tabindex="{{idx}}" data-id="{{_id}}">
+                    <article tabindex="{{idx}}" data-id="{{_id}}" class="{{classes}}">
                         <div>
                             <div>
                                 <div><label><input type="checkbox" name="completedNotes" value"{{_id}}" {{#if completed}}checked="checked"{{/if}}>erledigt</label></div>
@@ -67,48 +60,49 @@
                     {{/each}}
                 {{/if}}
             </section>
-            <!--
-                    <div><div>{{dueDateStr}}</div><div><label><input type="checkbox" name="completedNotes" value"{{_id}}" {{#if completed}}checked="checked"{{/if}}>erledigt</label></div><div>{{completionDateStr}}</div></div>
-                    <div><div><div>{{title}}</div><div class="fa">{{{importanceStr}}}</div></div><div>{{description}}</div><div>created: {{creationDateStr}}</div></div>
-                    <div><button type="button" data-action="edit"><i class="fa fa-pencil"></i></button> <button type="button" data-action="delete"><i class="fa fa-trash"></i></button></div>
-            -->
         </script>
     
         <script type="text/x-handlebars-template" id="editNoteView">
-            <h1>{{#if isNew}}Add New Note{{else}}Edit Note{{/if}}</h1>
-            <form novalidate>
-                <div class="formControl">
-                    <label>Titel:</label>
-                    <input type="text" id="title" name="title" value="{{title}}" />
+            <h1>{{#if isNew}}Neue Notiz Erfassen{{else}}Notiz Bearbeiten{{/if}}</h1>
+            <div class="noteEditor">
+                <div>
+                    <div class="entryField">
+                        <label>Titel:</label>
+                        <input type="text" class="formControl" id="title" name="title" value="{{title}}" />
+                    </div>
+                    <div class="entryField">
+                        <label>Wichtigkeit:</label>
+                        <select class="formControl" id="importance" name="importance" value="{{importance}}">
+                            <option value="1">&#xf0e7;</option>
+                            <option value="2">&#xf0e7;&#xf0e7;</option>
+                            <option value="3">&#xf0e7;&#xf0e7;&#xf0e7;</option>
+                            <option value="4">&#xf0e7;&#xf0e7;&#xf0e7;&#xf0e7;</option>
+                            <option value="5">&#xf0e7;&#xf0e7;&#xf0e7;&#xf0e7;&#xf0e7;</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="formControl">
-                    <label>Beschreibung:</label>
-                    <textarea id="description" name="description">{{description}}</textarea>
+                <div>
+                    <div class="entryField">
+                        <label>Beschreibung:</label>
+                        <textarea class="formControl" id="description" name="description">{{description}}</textarea>
+                    </div>
                 </div>
-                <div class="formControl">
-                    <label>Wichtigkeit:</label>
-                    <select id="importance" name="importance" value="{{importance}}">
-                        <option value="1">&#xf0e7;</option>
-                        <option value="2">&#xf0e7;&#xf0e7;</option>
-                        <option value="3">&#xf0e7;&#xf0e7;&#xf0e7;</option>
-                        <option value="4">&#xf0e7;&#xf0e7;&#xf0e7;&#xf0e7;</option>
-                        <option value="5">&#xf0e7;&#xf0e7;&#xf0e7;&#xf0e7;&#xf0e7;</option>
-                    </select>
+                <div>
+                    <div class="entryField">
+                        <label>Zu erledigen bis:</label>
+                        <input type="date" class="formControl" id="dueDate" name="dueDate" value="{{dueDateInputStr}}" />
+                    </div>
                 </div>
-                <div class="formControl">
-                    <label>Fälligkeitstermin:</label>
-                    <input type="date" id="dueDate" name="dueDate" value="{{dueDateInputStr}}" />
-                </div>
-                <div id="formButtons">
-                    <button type="button" id="submit">{{#if isNew}}Hinzufügen{{else}}Speichern{{/if}}</button>
-                    <button type="button" id="cancel">Abbrechen</button>
-                </div>
-            </form>
+            </div>
+            <div id="formButtons">
+                <button type="button" id="submit">{{#if isNew}}Hinzufügen{{else}}Speichern{{/if}}</button>
+                <button type="button" id="cancel">Abbrechen</button>
+            </div>
         </script>
 
         <!-- Scripts required by the application -->
         <script type="text/javascript" src="scripts/jquery-3.2.1.min.js"></script>
         <script type="text/javascript" src="scripts/handlebars-4.0.8.min.js"></script>
         <script type="text/javascript" src="scripts/moment-2.18.1.min.js"></script>
-	<script type="text/javascript" src="./scripts/noteApp.d892247c1c085e3d09ff.js"></script></body>
+	<script type="text/javascript" src="./scripts/noteApp.688918dcd301390a9118.js"></script></body>
 </html>

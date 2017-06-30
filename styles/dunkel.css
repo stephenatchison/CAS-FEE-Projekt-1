@@ -1,31 +1,15 @@
 body.dunkel {
   background-color: #333;
-  color: whitesmoke;
-}
-
-body.dunkel > div {
-  background-color: #333;
   color: #ccc;
 }
 
-.dunkel header > div {
+.dunkel header {
   background-color: #333;
 }
 
 .dunkel footer {
     border-top-color: #ccc;
     color: #ccc;
-}
-
-.dunkel main {
-  background-color: #000;
-  color: snow;
-}
-
-.dunkel section.notelist article {
-  border-color: transparent;
-  color: #000;
-  background: #aaa;
 }
 
 .dunkel #actions li.active,
@@ -40,7 +24,34 @@ body.dunkel > div {
   border-color: #777;
 }
 
-.hell #actions li:hover {
+.dunkel #actions li:hover {
   background-color: #777;
   border-color: #ccc;
+}
+
+.dunkel section.notelist article {
+  border-color: transparent;
+  color: #000;
+  background-color: #ffc;
+}
+
+.dunkel section.notelist article.completed {
+  background-color: lightgray;
+}
+
+.dunkel section.notelist article.overdue {
+  background-color: red;
+}
+
+.dunkel section.notelist article.today {
+  background-color: orange;
+}
+
+.dunkel section.notelist article.soon {
+  background-color: lightgreen;
+}
+
+/* create date */
+.dunkel section.notelist article.overdue > div:first-of-type > div:nth-of-type(5) {
+  color: wheat;
 }
