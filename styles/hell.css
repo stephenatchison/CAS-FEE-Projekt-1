@@ -1,11 +1,11 @@
 body.hell {
-  background-color: snow;
+  background-color: ghostwhite;
   color: black;
 }
 
 .hell header {
   background-color: royalblue;
-  color: snow;
+  color: ghostwhite;
 }
 
 .hell footer {
@@ -18,7 +18,7 @@ body.hell {
 .hell #viewOptions li.active {
   background-color: slategray;
   border-color: darkslategray;
-  color: snow;
+  color: ghostwhite;
 }
 
 .hell #actions li:hover,
@@ -36,6 +36,7 @@ body.hell {
   border-color: transparent;
   color: #000;
   background-color: #ffc;
+  box-shadow: 5px 5px 7px rgba(33,33,33,.7);
 }
 
 .hell section.notelist article.completed {
@@ -67,8 +68,5 @@ body.hell {
   background-color: red;
   color: white;
   border-color: white;
-}
-
-.hell .error > div:first-of-type {
 }
 

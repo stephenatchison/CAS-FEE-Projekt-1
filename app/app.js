@@ -1,6 +1,5 @@
 import {AppController} from "./appController";
 import {ConfigService} from "./shared/configService";
-import {NoteService} from "./shared/noteService";
 import {NoteRESTClientService} from "./shared/noteRESTClientService";
 import {RouterService} from "./shared/routerService";
 
@@ -25,7 +24,6 @@ export class NoteApp {
         // initialise services
         this.__configService = new ConfigService();
         this.__noteService = new NoteRESTClientService(location.origin + '/');
-//        this.__noteService = new NoteService();
         this.__routerService = new RouterService();
 
         // initialise app view

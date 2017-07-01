@@ -1,57 +1,72 @@
 body.dunkel {
-  background-color: #333;
-  color: #ccc;
+  background-color: #444;
+  color: ghostwhite;
 }
 
 .dunkel header {
-  background-color: #333;
+  background-color: silver;
+  color: black;
 }
 
 .dunkel footer {
-    border-top-color: #ccc;
-    color: #ccc;
+    border-top-color: silver;
+    color: silver;
 }
 
 .dunkel #actions li.active,
-.dunkel #sortButtons li.active:hover,
+.dunkel #sortButtons li.active,
 .dunkel #viewOptions li.active {
-  background-color: lightgoldenrodyellow;
-  border-color: yellow;
+  background-color: #7d7d7d;
+  border-color: #454545;
+  color: ghostwhite;
 }
 
-.dunkel #sortButtons li:hover {
+.dunkel #actions li:hover,
+.dunkel #sortButtons li:hover,
+.dunkel #viewOptions li:hover {
   background-color: #777;
-  border-color: #777;
+  border-color: #333;
 }
 
-.dunkel #actions li:hover {
-  background-color: #777;
-  border-color: #ccc;
+.dunkel section.notelist {
+  border-top-color: #ccc;
 }
 
 .dunkel section.notelist article {
   border-color: transparent;
-  color: #000;
-  background-color: #ffc;
+  color: #444;
+  background-color: #f0f0f0;
+  box-shadow: 5px 5px 7px rgba(128,128,128,.7);
 }
 
 .dunkel section.notelist article.completed {
-  background-color: lightgray;
+  background-color: #f9f9f9;
 }
 
 .dunkel section.notelist article.overdue {
-  background-color: red;
+  background-color: #4d4d4d;
 }
 
 .dunkel section.notelist article.today {
-  background-color: orange;
+  background-color: #898989;
 }
 
 .dunkel section.notelist article.soon {
-  background-color: lightgreen;
+  background-color: #c7c7c7;
 }
 
 /* create date */
 .dunkel section.notelist article.overdue > div:first-of-type > div:nth-of-type(5) {
-  color: wheat;
+  color: #e0e0e0;
 }
+
+.dunkel .noteEditor {
+  background-color: #f0f0f0;
+}
+
+.dunkel .error {
+  background-color: #4d4d4d;
+  color: white;
+  border-color: white;
+}
+

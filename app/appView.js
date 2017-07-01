@@ -10,8 +10,8 @@ export class AppView extends View {
         this.__themeSelect = document.getElementById('theme');
 
         this.__themes = [
-            { displayName: 'Hell', className: 'hell' },
-            { displayName: 'Dunkel', className: 'dunkel' }
+            { displayName: 'Farbig', className: 'hell' },
+            { displayName: 'Monochrom', className: 'dunkel' }
         ];
 
         this.__initThemeSelect();
