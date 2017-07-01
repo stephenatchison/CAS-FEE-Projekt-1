@@ -2,7 +2,7 @@ module.exports = class NotesDataStore {
     init(dirName) {
         var path = require('path');
         var datastore = require('nedb');
-        this.__notes = new datastore({ filename: path.join(dirName, 'notes.db'), autoload: true });
+        this.__notes = new datastore({ filename: path.join(dirName, 'data', 'notes.db'), autoload: true });
     }
 
     loadAll(onSuccess, onError) {

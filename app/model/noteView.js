@@ -35,6 +35,8 @@ export class NoteView {
 
     get idx() { return this.__idx; }
 
+    get canEdit() { return (this.title.length > 0) || (this._id.length === 0); }
+
     get classes() {
         let list = [];
         if (this.completed) {

@@ -242,6 +242,7 @@ section.notelist article.completed > div:first-of-type > div:nth-of-type(5) {
   margin-left: 2rem;
 }
 
+.btn,
 #formButtons button {
     box-sizing: content-box;
     min-width: 6rem;
@@ -289,4 +290,16 @@ section.notelist article.completed > div:first-of-type > div:nth-of-type(5) {
 
 .noteEditor textarea {
   height: 10rem;
+}
+
+.error {
+  margin: 0;
+  padding: 1rem;
+}
+
+.error > div:first-of-type {
+  margin: 0;
+  padding: 1rem;
+  border-width: 1px;
+  border-style: solid;
 }

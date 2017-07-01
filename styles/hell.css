@@ -62,3 +62,13 @@ body.hell {
 .hell .noteEditor {
   background-color: #ffc;
 }
+
+.hell .error {
+  background-color: red;
+  color: white;
+  border-color: white;
+}
+
+.hell .error > div:first-of-type {
+}
+

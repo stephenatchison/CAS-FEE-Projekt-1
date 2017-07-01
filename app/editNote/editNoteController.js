@@ -32,7 +32,8 @@ export class EditNoteController extends Controller {
             }
             catch(e) {
               // note was not found
-              this.__note = null;
+              this.__note = new Note();
+              this.__note._id = id;
             }
         }
 

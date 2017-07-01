@@ -14,12 +14,12 @@
         <main></main>
         <footer>CAS-FEE: Projekt 1 (Notizenapplikation), 2017</footer>
     
-        <!-- Handlebars templates for the application -->
+        <!-- Handlebars template for the main view -->
         <script type="text/x-handlebars-template" id="mainView">
             <section id="mainControls">
                 <div id="actions">
                     <ul>
-                        <li id="addNew">Hinzufügen</li>
+                        <li id="addNew">Neue Notiz Hinzufügen</li>
                     </ul>
                     <ul>
                         <li id="autoRefresh" {{#if autoRefresh}}class="active"{{/if}}>Automatisch aktualisieren</li>
@@ -27,12 +27,12 @@
                 </div>
                 <div id="viewOptions">
                     <ul id="sortButtons">
-                        <li id="byDueDate" {{#if sortByDueDate}}class="active"{{/if}}>By Due Date</li>
-                        <li id="byCreationDate" {{#if sortByCreationDate}}class="active"{{/if}}>By Creation Date</li>
-                        <li id="byImportance" {{#if sortByImportance}}class="active"{{/if}}>By Importance</li>
+                        <li id="byDueDate" {{#if sortByDueDate}}class="active"{{/if}}>nach Fälligkeit</li>
+                        <li id="byCreationDate" {{#if sortByCreationDate}}class="active"{{/if}}>nach Erstellungsdatum</li>
+                        <li id="byImportance" {{#if sortByImportance}}class="active"{{/if}}>nach Wichtigkeit</li>
                     </ul>
                     <ul>
-                        <li id="showCompleted" {{#if showCompleted}}class="active"{{/if}}>Show Completed</li>
+                        <li id="showCompleted" {{#if showCompleted}}class="active"{{/if}}>Erledigte auch anzeigen</li>
                     </ul>
                 </div>
             </section>
@@ -62,8 +62,10 @@
             </section>
         </script>
     
+        <!-- Handlebars template for the editNote view -->
         <script type="text/x-handlebars-template" id="editNoteView">
             <h1>{{#if isNew}}Neue Notiz Erfassen{{else}}Notiz Bearbeiten{{/if}}</h1>
+            {{#if canEdit}}
             <div class="noteEditor">
                 <div>
                     <div class="entryField">
@@ -98,6 +100,12 @@
                 <button type="button" id="submit">{{#if isNew}}Hinzufügen{{else}}Speichern{{/if}}</button>
                 <button type="button" id="cancel">Abbrechen</button>
             </div>
+            {{else}}
+            <div class="error">
+                <div>Die Notiz mit der angegebenen Id ({{_id}}) konnte nicht gefunden werden!</div>
+            </div>
+            <div id="formButtons"><button type="button" id="cancel">Zurück</button></div>
+            {{/if}}
         </script>
 
         <!-- Scripts required by the application -->
