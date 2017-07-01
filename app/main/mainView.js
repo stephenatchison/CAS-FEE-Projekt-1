@@ -21,9 +21,9 @@ export class MainView extends View {
         this.__$autoRefreshElem = null;
     }
 
-    destroy() {
+    deactivate() {
         this.__removeEventHandlers();
-        super.destroy();
+        super.deactivate();
     }
 
     render(data) {

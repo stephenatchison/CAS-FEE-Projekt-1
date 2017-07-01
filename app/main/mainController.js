@@ -1,6 +1,6 @@
 import {Controller} from "../shared/controller";
 import {MainView} from "./mainView";
-import {NoteView} from "../shared/noteView";
+import {NoteView} from "../model/noteView";
 
 export class MainController extends Controller {
     constructor(app) {

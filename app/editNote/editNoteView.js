@@ -32,9 +32,9 @@ export class EditNoteView extends View {
     get importance() { return (this.__$importanceElem != null) ? this.__$importanceElem.val() : ''; }
     get dueDate() { return (this.__$dueDateElem != null) ? this.__$dueDateElem.val() : ''; }
 
-    destroy() {
+    deactivate() {
         this.__removeEventHandlers();
-        super.destroy();
+        super.deactivate();
     }
 
     render(data) {

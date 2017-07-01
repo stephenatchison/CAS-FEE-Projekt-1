@@ -23,7 +23,7 @@ export class Controller {
 
     deactivate() {
         this.__saveConfig();
-        this.__view.destroy();
+        this.__view.deactivate();
     };
 
     initView(view) { }

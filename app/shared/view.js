@@ -8,7 +8,7 @@ export class View {
 
     get name() { return this.__name; }
 
-    destroy() { }
+    deactivate() { }
 
     render(data) {
         if (this.__hasTemplate) {

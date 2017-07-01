@@ -1,4 +1,4 @@
-import {Note} from "./note";
+import {Note} from "../model/note";
 
 export class NoteService {
     constructor() {

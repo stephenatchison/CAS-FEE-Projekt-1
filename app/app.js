@@ -24,7 +24,7 @@ export class NoteApp {
     run() {
         // initialise services
         this.__configService = new ConfigService();
-        this.__noteService = new NoteRESTClientService('http://localhost:3000/');
+        this.__noteService = new NoteRESTClientService(location.origin + '/');
 //        this.__noteService = new NoteService();
         this.__routerService = new RouterService();
 

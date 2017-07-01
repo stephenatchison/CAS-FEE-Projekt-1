@@ -1,7 +1,7 @@
 import {Controller} from "../shared/controller";
 import {EditNoteView} from "./editNoteView";
-import {Note} from "../shared/note";
-import {NoteView} from "../shared/noteView";
+import {Note} from "../model/note";
+import {NoteView} from "../model/noteView";
 
 export class EditNoteController extends Controller {
     constructor(app) {
@@ -23,6 +23,7 @@ export class EditNoteController extends Controller {
             id = '';
         }
 
+        this.__changedNote = null;
         if (id === '') {
             this.__note = null;
         } else {
@@ -30,7 +31,8 @@ export class EditNoteController extends Controller {
                 this.__note = await this.noteService.loadNote(id);
             }
             catch(e) {
-              // note was not found  
+              // note was not found
+              this.__note = null;
             }
         }
 
