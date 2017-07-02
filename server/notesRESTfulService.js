@@ -62,7 +62,7 @@ module.exports = class NotesRESTfulService {
     }
 
     __updateNote(request, response) {
-        if (!request.body) {
+        if (!request.body || !this.__isNoteValid(request.body)) {
             this.__sendBadRequest(response);
         } else {
             let note = request.body;
@@ -103,7 +103,7 @@ module.exports = class NotesRESTfulService {
     }
 
     __addNote(request, response) {
-        if (!request.body) {
+        if (!request.body || !this.__isNoteValid(request.body)) {
             this.__sendBadRequest(response);
         } else {
             this.__datastore.add(request.body,
@@ -115,6 +115,24 @@ module.exports = class NotesRESTfulService {
                     this.__sendServerError(response);
                 }
             );
+        }
+    }
+
+    __isNoteValid(note) {
+        return note.hasOwnProperty('title') && (typeof note.title === 'string') && (note.title.length > 0)
+            && (!note.hasOwnProperty('description') || (note.description === null) || (typeof note.description === 'string'))
+            && note.hasOwnProperty('importance') && (typeof note.importance === 'number') && (note.importance > 0) && (note.importance < 6)
+            && this.__isPropertyValidDate(note, 'dueDate')
+            && (!note.hasOwnProperty('_id') || this.__isPropertyValidDate(note, 'creationDate'))
+            && (!note.hasOwnProperty('completionDate') || this.__isPropertyValidDate(note, 'completionDate'));
+    }
+
+    __isPropertyValidDate(note, propertyName) {
+        if (note.hasOwnProperty(propertyName)) {
+            let d = new Date(note[propertyName]);
+            return (typeof d === 'object') && (d instanceof Date) && (d.getTime() === d.getTime());
+        } else {
+            return false;
         }
     }
 
