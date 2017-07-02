@@ -60,7 +60,7 @@ export class EditNoteController extends Controller {
                 this.__gotoOverview();
             }
             catch(e) {
-
+                alert('Die Notiz konnte nicht gespeichert werden!');
             }
         };
 

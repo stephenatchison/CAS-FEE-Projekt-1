@@ -159,14 +159,6 @@ section.notelist article:focus > div:first-of-type > div:nth-of-type(1) {
   margin-bottom: 1rem;
 }
 
-/* completed
-section.notelist article > div:first-of-type > div:nth-of-type(1) > div:nth-of-type(1) {
-}
-*/
-/* buttons
-section.notelist article > div:first-of-type > div:nth-of-type(1) > div:nth-of-type(2) {
-}
-*/
 /* title/importance line */
 section.notelist article > div:first-of-type > div:nth-of-type(2) {
   display: flex;
@@ -179,14 +171,18 @@ section.notelist article > div:first-of-type > div:nth-of-type(2) {
 
 /* title */
 section.notelist article > div:first-of-type > div:nth-of-type(2) > div:nth-of-type(1) {
+  flex: 1 1 100%;
+  padding-right: 0.5rem;
   font-weight: bold;
   font-size: 140%;
-  flex: 1 1 100%;
+  white-space: nowrap;
+  overflow-x: hidden;
 }
 
 /* importance */
 section.notelist article > div:first-of-type > div:nth-of-type(2) > div:nth-of-type(2) {
   flex: 0 0 auto;
+  padding-left: 0.5rem;
 }
 
 /* description */
