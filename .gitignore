@@ -1,4 +1,5 @@
 node_modules
+static/*.html
 static/scripts
 static/styles
 static/fonts
